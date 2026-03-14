@@ -295,27 +295,6 @@
     </div>
   </div>
 
-  <!-- Milestone table -->
-  <div class="card">
-    <div class="card-hdr">Milestone Summary</div>
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Milestone</th>
-            <th class="r">Year</th>
-            <th class="r purple-bg">Net Worth — Scen A</th>
-            <th class="r green-bg">Net Worth — Scen B</th>
-            <th class="r purple-bg">Annual Surplus — Scen A</th>
-            <th class="r green-bg">Annual Surplus — Scen B</th>
-            <th class="r purple-bg">Cumulative — Scen A</th>
-            <th class="r green-bg">Cumulative — Scen B</th>
-          </tr>
-        </thead>
-        <tbody id="milestone-body"></tbody>
-      </table>
-    </div>
-  </div>
 
 </div><!-- /tab-results -->
 
@@ -574,7 +553,6 @@ function runCalc() {
 
   renderMetrics(A, B, inp);
   renderCharts(A, B);
-  renderMilestones(A, B, inp);
   renderTables(A, B);
   switchTab('results');
 }
@@ -694,37 +672,6 @@ function renderCharts(A, B) {
   });
 }
 
-// ─────────────────────────────────────────────────────────────
-// Milestone table
-// ─────────────────────────────────────────────────────────────
-function renderMilestones(A, B, inp) {
-  const ms = [
-    { label: `Chris stops work (age ${inp.cRet})`,       i: inp.cRet - inp.cAge },
-    { label: `Sophia stops work (age ${inp.sRet})`,      i: inp.sRet - inp.cAge },
-    { label: `Chris pension drawdown (age ${inp.cDD})`,  i: inp.cDD  - inp.cAge },
-    { label: `Sophia pension drawdown (age ${inp.sDD})`, i: inp.sDD  - inp.cAge },
-    { label: 'Chris age 65',                             i: 65 - inp.cAge       },
-    { label: '10 years (2036)',                          i: 10 },
-    { label: '20 years (2046)',                          i: 20 },
-    { label: '25 years (2051)',                          i: 25 },
-    { label: '30 years (2056)',                          i: N - 1 },
-  ];
-
-  document.getElementById('milestone-body').innerHTML = ms.map(m => {
-    if (!inRange(m.i)) return `<tr><td>${m.label}</td><td class="r" colspan="7">Outside 30-year window</td></tr>`;
-    const i = m.i;
-    return `<tr>
-      <td>${m.label}</td>
-      <td class="r">${START_YEAR + i}</td>
-      <td class="r">${gbp(A.nw[i])}</td>
-      <td class="r">${gbp(B.nw[i])}</td>
-      <td class="r ${surpClass(A.surp[i])}">${gbp(A.surp[i])}</td>
-      <td class="r ${surpClass(B.surp[i])}">${gbp(B.surp[i])}</td>
-      <td class="r ${surpClass(A.cum[i])}">${gbp(A.cum[i])}</td>
-      <td class="r ${surpClass(B.cum[i])}">${gbp(B.cum[i])}</td>
-    </tr>`;
-  }).join('');
-}
 
 // ─────────────────────────────────────────────────────────────
 // 30-year detail tables
