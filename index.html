@@ -415,7 +415,6 @@ function runCalc() {
     totExp: v('e_total'),
   };
 
-  const ddEach = inp.totExp / 2;
   const B = makeData();
 
   for (let i = 0; i < N; i++) {
@@ -423,52 +422,107 @@ function runCalc() {
     const sAge = inp.sAge + i;
     B.cAge[i] = cAge; B.sAge[i] = sAge;
 
+    // ── 1. Grow assets from prior year ────────────────────────────────────
+    let cPen, cISA, cInv, cCash, sPen, sISA, sInv, sCash, prop;
     if (i === 0) {
-      B.cPen[0]=inp.cPen; B.cISA[0]=inp.cISA; B.cInv[0]=inp.cInv; B.cCash[0]=inp.cCash;
-      B.sPen[0]=inp.sPen; B.sISA[0]=inp.sISA; B.sInv[0]=inp.sInv; B.sCash[0]=inp.sCash;
-      B.prop[0]=inp.prop;
+      cPen = inp.cPen; cISA = inp.cISA; cInv = inp.cInv; cCash = inp.cCash;
+      sPen = inp.sPen; sISA = inp.sISA; sInv = inp.sInv; sCash = inp.sCash;
+      prop = inp.prop;
     } else {
-      const cG = B.cPen[i-1] * (1 + inp.gr);
-      const sG = B.sPen[i-1] * (1 + inp.gr);
-      B.cPen[i]  = cAge >= inp.cDD ? Math.max(0, cG - ddEach) : cG;
-      B.cISA[i]  = B.cISA[i-1]  * (1 + inp.gr);
-      B.cInv[i]  = B.cInv[i-1]  * (1 + inp.gr);
-      B.cCash[i] = B.cCash[i-1] * (1 + inp.cCashR);
-      B.sPen[i]  = sAge >= inp.sDD ? Math.max(0, sG - ddEach) : sG;
-      B.sISA[i]  = B.sISA[i-1]  * (1 + inp.gr);
-      B.sInv[i]  = B.sInv[i-1]  * (1 + inp.gr);
-      B.sCash[i] = B.sCash[i-1] * (1 + inp.sCashR);
-      B.prop[i]  = B.prop[i-1]  * (1 + inp.propR);
+      cPen  = B.cPen[i-1]  * (1 + inp.gr);
+      cISA  = B.cISA[i-1]  * (1 + inp.gr);
+      cInv  = B.cInv[i-1]  * (1 + inp.gr);
+      cCash = B.cCash[i-1] * (1 + inp.cCashR);
+      sPen  = B.sPen[i-1]  * (1 + inp.gr);
+      sISA  = B.sISA[i-1]  * (1 + inp.gr);
+      sInv  = B.sInv[i-1]  * (1 + inp.gr);
+      sCash = B.sCash[i-1] * (1 + inp.sCashR);
+      prop  = B.prop[i-1]  * (1 + inp.propR);
     }
 
-    B.nw[i] = B.cPen[i]+B.cISA[i]+B.cInv[i]+B.cCash[i]+B.sPen[i]+B.sISA[i]+B.sInv[i]+B.sCash[i]+B.prop[i];
-
+    // ── 2. Non-pension income (employment + state pension) ────────────────
     const cEmp = cAge < inp.cRet ? inp.cEmp + inp.cBiz : 0;
     const sEmp = sAge < inp.sRet ? inp.sEmp : 0;
     const stC  = cAge >= 67 ? inp.stateC : 0;
     const stS  = sAge >= 67 ? inp.stateS : 0;
 
-    if (cAge >= inp.cDD) {
-      const avail = i === 0 ? inp.cPen : B.cPen[i-1] * (1 + inp.gr);
-      B.cDD[i] = Math.min(ddEach, avail);
-    } else { B.cDD[i] = 0; }
+    const cBaseGross = cEmp + stC;
+    const sBaseGross = sEmp + stS;
+    const cBaseTax   = calcIncomeTax(cBaseGross, inp.tPA, inp.tBRT, inp.tART) + calcNI(cEmp);
+    const sBaseTax   = calcIncomeTax(sBaseGross, inp.tPA, inp.tBRT, inp.tART) + calcNI(sEmp);
+    const baseNetInc = (cBaseGross - cBaseTax) + (sBaseGross - sBaseTax) + inp.otherInc;
 
-    if (sAge >= inp.sDD) {
-      const avail = i === 0 ? inp.sPen : B.sPen[i-1] * (1 + inp.gr);
-      B.sDD[i] = Math.min(ddEach, avail);
-    } else { B.sDD[i] = 0; }
+    const totExp = inp.totExp * Math.pow(1 + inp.inf, i);
+    let shortfall = Math.max(0, totExp - baseNetInc);
 
-    const cGross = cEmp + B.cDD[i] + stC;
-    const sGross = sEmp + B.sDD[i] + stS;
-    const cTax   = calcIncomeTax(cGross, inp.tPA, inp.tBRT, inp.tART) + calcNI(cEmp);
-    const sTax   = calcIncomeTax(sGross, inp.tPA, inp.tBRT, inp.tART) + calcNI(sEmp);
+    // ── 3. Pension drawdown to cover shortfall (iterative tax solve) ──────
+    // We need to find gross drawdown such that net-of-tax drawdown = shortfall.
+    const cInDD = cAge >= inp.cDD;
+    const sInDD = sAge >= inp.sDD;
+    let cDD = 0, sDD = 0;
 
-    B.cGross[i] = cGross; B.sGross[i] = sGross;
-    B.cTax[i]   = cTax;   B.sTax[i]   = sTax;
-    B.totInc[i] = (cGross - cTax) + (sGross - sTax) + inp.otherInc;
-    B.totExp[i] = inp.totExp * Math.pow(1 + inp.inf, i);
-    B.surp[i]   = B.totInc[i] - B.totExp[i];
-    B.cum[i]    = i === 0 ? B.surp[0] : B.cum[i-1] + B.surp[i];
+    if (shortfall > 0 && (cInDD || sInDD)) {
+      const cAvail = cInDD ? cPen : 0;
+      const sAvail = sInDD ? sPen : 0;
+      const maxGross = cAvail + sAvail;
+      const cFrac = maxGross > 0 ? cAvail / maxGross : 0;
+
+      let gross = Math.min(shortfall * 1.7, maxGross);
+      for (let k = 0; k < 12; k++) {
+        cDD = Math.min(cAvail, gross * cFrac);
+        sDD = Math.min(sAvail, gross * (1 - cFrac));
+        const cTaxDD = calcIncomeTax(cBaseGross + cDD, inp.tPA, inp.tBRT, inp.tART) + calcNI(cEmp);
+        const sTaxDD = calcIncomeTax(sBaseGross + sDD, inp.tPA, inp.tBRT, inp.tART) + calcNI(sEmp);
+        const netDD  = (cDD - (cTaxDD - cBaseTax)) + (sDD - (sTaxDD - sBaseTax));
+        if (netDD <= 0) { gross = Math.min(gross * 1.5, maxGross); continue; }
+        if (Math.abs(netDD - shortfall) < 50) break;
+        gross = Math.min(gross * shortfall / netDD, maxGross);
+      }
+      cDD = Math.min(cAvail, gross * cFrac);
+      sDD = Math.min(sAvail, gross * (1 - cFrac));
+      cPen = Math.max(0, cPen - cDD);
+      sPen = Math.max(0, sPen - sDD);
+    }
+
+    // ── 4. Final net income and surplus ───────────────────────────────────
+    const cTax = calcIncomeTax(cBaseGross + cDD, inp.tPA, inp.tBRT, inp.tART) + calcNI(cEmp);
+    const sTax = calcIncomeTax(sBaseGross + sDD, inp.tPA, inp.tBRT, inp.tART) + calcNI(sEmp);
+    const totNetInc = (cBaseGross + cDD - cTax) + (sBaseGross + sDD - sTax) + inp.otherInc;
+    const surp = totNetInc - totExp;
+
+    // ── 5. Deficit: draw from non-pension assets (Cash → Investments → ISA)
+    if (surp < 0) {
+      let def = -surp;
+      const drawDown = (total, fracC, fracS) => {
+        if (total <= 0 || def <= 0) return;
+        const draw = Math.min(total, def);
+        cCash -= (fracC === 'cash') ? draw * (cCash / total) : 0;
+        sCash -= (fracC === 'cash') ? draw * (sCash / total) : 0;
+        cInv  -= (fracC === 'inv')  ? draw * (cInv  / total) : 0;
+        sInv  -= (fracC === 'inv')  ? draw * (sInv  / total) : 0;
+        cISA  -= (fracC === 'isa')  ? draw * (cISA  / total) : 0;
+        sISA  -= (fracC === 'isa')  ? draw * (sISA  / total) : 0;
+        def   -= draw;
+      };
+      drawDown(cCash + sCash, 'cash', 'cash');
+      drawDown(cInv  + sInv,  'inv',  'inv');
+      drawDown(cISA  + sISA,  'isa',  'isa');
+    }
+
+    // ── 6. Surplus: add to cash savings ───────────────────────────────────
+    if (surp > 0) { cCash += surp * 0.5; sCash += surp * 0.5; }
+
+    // ── 7. Store ──────────────────────────────────────────────────────────
+    B.cPen[i]=cPen; B.cISA[i]=cISA; B.cInv[i]=cInv; B.cCash[i]=cCash;
+    B.sPen[i]=sPen; B.sISA[i]=sISA; B.sInv[i]=sInv; B.sCash[i]=sCash;
+    B.prop[i]=prop;
+    B.nw[i] = cPen+cISA+cInv+cCash+sPen+sISA+sInv+sCash+prop;
+    B.cDD[i]=cDD; B.sDD[i]=sDD;
+    B.cGross[i]=cBaseGross+cDD; B.sGross[i]=sBaseGross+sDD;
+    B.cTax[i]=cTax; B.sTax[i]=sTax;
+    B.totInc[i]=totNetInc; B.totExp[i]=totExp;
+    B.surp[i]=surp;
+    B.cum[i] = i === 0 ? surp : B.cum[i-1] + surp;
   }
 
   lastB = B; lastInp = inp;
