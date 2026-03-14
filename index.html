@@ -627,14 +627,15 @@ function renderCharts(B) {
     options: commonOpts()
   });
 
+  const RED = 'rgba(185,28,28,1)';
   destroyChart('assets-b');
   charts['assets-b'] = new Chart(document.getElementById('chart-assets-b'), {
     type: 'line',
     data: { labels: lbls, datasets: [
-      { label: 'Chris Pension',  data: B.cPen, borderColor: PURPLE, backgroundColor: 'rgba(107,70,193,0.2)', fill: true, tension: 0.3, pointRadius: 0 },
-      { label: 'Chris ISA',      data: B.cISA, borderColor: BLUE,   backgroundColor: 'rgba(46,117,182,0.2)',  fill: true, tension: 0.3, pointRadius: 0 },
-      { label: 'Sophia Pension', data: B.sPen, borderColor: AMBER,  backgroundColor: 'rgba(212,160,23,0.2)',  fill: true, tension: 0.3, pointRadius: 0 },
-      { label: 'Property',       data: B.prop, borderColor: GREEN,  backgroundColor: 'rgba(26,94,42,0.2)',    fill: true, tension: 0.3, pointRadius: 0 },
+      { label: 'Total Pension',      data: B.cPen.map((v,i) => v + B.sPen[i]), borderColor: PURPLE, backgroundColor: 'rgba(107,70,193,0.15)', fill: true, tension: 0.3, pointRadius: 0 },
+      { label: 'Total ISA',          data: B.cISA.map((v,i) => v + B.sISA[i]), borderColor: BLUE,   backgroundColor: 'rgba(46,117,182,0.15)',  fill: true, tension: 0.3, pointRadius: 0 },
+      { label: 'Total Investments',  data: B.cInv.map((v,i) => v + B.sInv[i]), borderColor: AMBER,  backgroundColor: 'rgba(212,160,23,0.15)',  fill: true, tension: 0.3, pointRadius: 0 },
+      { label: 'Total Cash',         data: B.cCash.map((v,i) => v + B.sCash[i]), borderColor: GREEN, backgroundColor: 'rgba(26,94,42,0.15)',  fill: true, tension: 0.3, pointRadius: 0 },
     ]},
     options: commonOpts()
   });
