@@ -462,8 +462,18 @@ function runCalc() {
     const totExp = inp.totExp * Math.pow(1 + inp.inf, i);
     let shortfall = Math.max(0, totExp - baseNetInc);
 
-    // ── 3. Pension drawdown to cover shortfall (iterative tax solve) ──────
-    // We need to find gross drawdown such that net-of-tax drawdown = shortfall.
+    // ── 3. Cover shortfall from non-pension assets first (Cash → Inv → ISA)
+    const drawProp = (total, applyFn) => {
+      if (total <= 0 || shortfall <= 0) return;
+      const draw = Math.min(total, shortfall);
+      applyFn(draw / total);
+      shortfall -= draw;
+    };
+    drawProp(cCash + sCash, f => { cCash -= cCash * f; sCash -= sCash * f; });
+    drawProp(cInv  + sInv,  f => { cInv  -= cInv  * f; sInv  -= sInv  * f; });
+    drawProp(cISA  + sISA,  f => { cISA  -= cISA  * f; sISA  -= sISA  * f; });
+
+    // ── 4. Pension drawdown only if shortfall remains (last resort) ───────
     const cInDD = cAge >= inp.cDD;
     const sInDD = sAge >= inp.sDD;
     let cDD = 0, sDD = 0;
@@ -491,30 +501,11 @@ function runCalc() {
       sPen = Math.max(0, sPen - sDD);
     }
 
-    // ── 4. Final net income and surplus ───────────────────────────────────
+    // ── 5. Final net income and surplus ───────────────────────────────────
     const cTax = calcIncomeTax(cBaseGross + cDD, inp.tPA, inp.tBRT, inp.tART) + calcNI(cEmp);
     const sTax = calcIncomeTax(sBaseGross + sDD, inp.tPA, inp.tBRT, inp.tART) + calcNI(sEmp);
     const totNetInc = (cBaseGross + cDD - cTax) + (sBaseGross + sDD - sTax) + inp.otherInc;
     const surp = totNetInc - totExp;
-
-    // ── 5. Deficit: draw from non-pension assets (Cash → Investments → ISA)
-    if (surp < 0) {
-      let def = -surp;
-      const drawDown = (total, fracC, fracS) => {
-        if (total <= 0 || def <= 0) return;
-        const draw = Math.min(total, def);
-        cCash -= (fracC === 'cash') ? draw * (cCash / total) : 0;
-        sCash -= (fracC === 'cash') ? draw * (sCash / total) : 0;
-        cInv  -= (fracC === 'inv')  ? draw * (cInv  / total) : 0;
-        sInv  -= (fracC === 'inv')  ? draw * (sInv  / total) : 0;
-        cISA  -= (fracC === 'isa')  ? draw * (cISA  / total) : 0;
-        sISA  -= (fracC === 'isa')  ? draw * (sISA  / total) : 0;
-        def   -= draw;
-      };
-      drawDown(cCash + sCash, 'cash', 'cash');
-      drawDown(cInv  + sInv,  'inv',  'inv');
-      drawDown(cISA  + sISA,  'isa',  'isa');
-    }
 
     // ── 6. Surplus: ISA first (50:50), remainder into investments (50:50) ──
     if (surp > 0) {
