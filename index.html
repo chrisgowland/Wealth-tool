@@ -143,7 +143,7 @@
         <div class="card-hdr">Asset Position</div>
         <div class="card-body">
           <div class="person-hdr">Chris</div>
-          <div class="input-row"><label>Current age</label><input type="text" inputmode="decimal" id="c_age"  value="48"></div>
+          <div class="input-row"><label>Current age</label><input type="text" inputmode="decimal" id="c_age"  value="49"></div>
           <div class="input-row"><label>Retirement / stop-work age</label><input type="text" inputmode="decimal" id="c_ret"  value="58"></div>
           <div class="input-row"><label>Pension drawdown age</label><input type="text" inputmode="decimal" id="c_dd"   value="57"></div>
           <div class="input-row"><label>Pension / SIPP (£)</label><input type="text" inputmode="decimal" id="c_pen"  value="1,100,000"></div>
@@ -224,6 +224,10 @@
         <div class="card-body">
           <div class="input-row"><label>Total annual expenditure (£)</label><input type="text" inputmode="decimal" id="e_total" value="160,000"></div>
           <p class="note">Inflated at the rate set in Assumptions each year.</p>
+          <div class="person-hdr">Later-Life Reduced Spending</div>
+          <div class="input-row"><label>Reduce from Sophia age</label><input type="text" inputmode="decimal" id="e_red_age" value="70"></div>
+          <div class="input-row"><label>Reduced expenditure in today's money (£)</label><input type="text" inputmode="decimal" id="e_red_amt" value="50,000"></div>
+          <p class="note">Inflation-adjusted from today, applied once Sophia reaches the specified age.</p>
         </div>
       </div>
     </div>
@@ -419,7 +423,9 @@ function runCalc() {
     inf:      pct('r_inf'),
     isaLimit: v('isa_limit'),
 
-    totExp: v('e_total'),
+    totExp:   v('e_total'),
+    redAge:   v('e_red_age'),
+    redExp:   v('e_red_amt'),
   };
 
   N = 100 - inp.sAge;
@@ -462,7 +468,8 @@ function runCalc() {
     const sBaseTax   = calcIncomeTax(sBaseGross, inp.tPA, inp.tBRT, inp.tART) + calcNI(sEmp);
     const baseNetInc = (cBaseGross - cBaseTax) + (sBaseGross - sBaseTax) + inp.otherInc;
 
-    const totExp = inp.totExp * Math.pow(1 + inp.inf, i);
+    const baseExp = sAge >= inp.redAge ? inp.redExp : inp.totExp;
+    const totExp = baseExp * Math.pow(1 + inp.inf, i);
     let shortfall = Math.max(0, totExp - baseNetInc);
 
     // ── 3. Cover shortfall from non-pension assets first (Cash → Inv → ISA)
