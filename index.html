@@ -300,9 +300,9 @@
 // ─────────────────────────────────────────────────────────────
 // Constants
 // ─────────────────────────────────────────────────────────────
-const N = 30;
 const START_YEAR = 2026;
-const YEARS = Array.from({length: N}, (_, i) => START_YEAR + i);
+let N = 62;
+let YEARS = Array.from({length: N}, (_, i) => START_YEAR + i);
 const charts = {};
 let lastB, lastInp;
 let savedScenarios = JSON.parse(localStorage.getItem('wealthScenarios') || '[]');
@@ -421,6 +421,9 @@ function runCalc() {
 
     totExp: v('e_total'),
   };
+
+  N = 100 - inp.sAge;
+  YEARS = Array.from({length: N}, (_, i) => START_YEAR + i);
 
   const B = makeData();
 
