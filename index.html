@@ -146,20 +146,20 @@
           <div class="input-row"><label>Current age</label><input type="text" inputmode="decimal" id="c_age"  value="48"></div>
           <div class="input-row"><label>Retirement / stop-work age</label><input type="text" inputmode="decimal" id="c_ret"  value="58"></div>
           <div class="input-row"><label>Pension drawdown age</label><input type="text" inputmode="decimal" id="c_dd"   value="57"></div>
-          <div class="input-row"><label>Pension / SIPP (£)</label><input type="text" inputmode="decimal" id="c_pen"  value="350000"></div>
-          <div class="input-row"><label>Stocks &amp; Shares ISA (£)</label><input type="text" inputmode="decimal" id="c_isa"  value="60000"></div>
-          <div class="input-row"><label>Non-ISA investments (£)</label><input type="text" inputmode="decimal" id="c_inv"  value="0"></div>
-          <div class="input-row"><label>Cash savings (£)</label><input type="text" inputmode="decimal" id="c_cash" value="20000"></div>
+          <div class="input-row"><label>Pension / SIPP (£)</label><input type="text" inputmode="decimal" id="c_pen"  value="1,100,000"></div>
+          <div class="input-row"><label>Stocks &amp; Shares ISA (£)</label><input type="text" inputmode="decimal" id="c_isa"  value="320,000"></div>
+          <div class="input-row"><label>Non-ISA investments (£)</label><input type="text" inputmode="decimal" id="c_inv"  value="745,000"></div>
+          <div class="input-row"><label>Cash savings (£)</label><input type="text" inputmode="decimal" id="c_cash" value="150,000"></div>
           <div class="input-row"><label>Cash interest rate (%)</label><input type="text" inputmode="decimal" id="c_cashr" value="4"></div>
 
           <div class="person-hdr">Sophia</div>
           <div class="input-row"><label>Current age</label><input type="text" inputmode="decimal" id="s_age"  value="38"></div>
           <div class="input-row"><label>Retirement / stop-work age</label><input type="text" inputmode="decimal" id="s_ret"  value="48"></div>
           <div class="input-row"><label>Pension drawdown age</label><input type="text" inputmode="decimal" id="s_dd"   value="57"></div>
-          <div class="input-row"><label>Pension / SIPP (£)</label><input type="text" inputmode="decimal" id="s_pen"  value="80000"></div>
-          <div class="input-row"><label>Stocks &amp; Shares ISA (£)</label><input type="text" inputmode="decimal" id="s_isa"  value="20000"></div>
-          <div class="input-row"><label>Non-ISA investments (£)</label><input type="text" inputmode="decimal" id="s_inv"  value="0"></div>
-          <div class="input-row"><label>Cash savings (£)</label><input type="text" inputmode="decimal" id="s_cash" value="10000"></div>
+          <div class="input-row"><label>Pension / SIPP (£)</label><input type="text" inputmode="decimal" id="s_pen"  value="5,000,000"></div>
+          <div class="input-row"><label>Stocks &amp; Shares ISA (£)</label><input type="text" inputmode="decimal" id="s_isa"  value="130,000"></div>
+          <div class="input-row"><label>Non-ISA investments (£)</label><input type="text" inputmode="decimal" id="s_inv"  value="450,000"></div>
+          <div class="input-row"><label>Cash savings (£)</label><input type="text" inputmode="decimal" id="s_cash" value="0"></div>
           <div class="input-row"><label>Cash interest rate (%)</label><input type="text" inputmode="decimal" id="s_cashr" value="4"></div>
 
           <div class="person-hdr">Shared Property</div>
@@ -222,21 +222,8 @@
       <div class="card">
         <div class="card-hdr">Annual Expenditure</div>
         <div class="card-body">
-          <div class="input-row"><label>Housing — mortgage / rent (£)</label><input type="text" inputmode="decimal" id="e_housing" value="24000"></div>
-          <div class="input-row"><label>Housing — maintenance &amp; service (£)</label><input type="text" inputmode="decimal" id="e_maint"   value="3000"></div>
-          <div class="input-row"><label>Utilities &amp; broadband (£)</label><input type="text" inputmode="decimal" id="e_util"    value="3600"></div>
-          <div class="input-row"><label>Groceries &amp; household (£)</label><input type="text" inputmode="decimal" id="e_groc"    value="9600"></div>
-          <div class="input-row"><label>Childcare (£)</label><input type="text" inputmode="decimal" id="e_child"   value="12000"></div>
-          <div class="input-row"><label>Transport — car &amp; fuel (£)</label><input type="text" inputmode="decimal" id="e_trans"   value="6000"></div>
-          <div class="input-row"><label>Holidays &amp; travel (£)</label><input type="text" inputmode="decimal" id="e_hols"    value="8000"></div>
-          <div class="input-row"><label>Clothing &amp; personal (£)</label><input type="text" inputmode="decimal" id="e_cloth"   value="4000"></div>
-          <div class="input-row"><label>Health &amp; fitness (£)</label><input type="text" inputmode="decimal" id="e_health"  value="2400"></div>
-          <div class="input-row"><label>Eating out &amp; socialising (£)</label><input type="text" inputmode="decimal" id="e_eat"     value="5000"></div>
-          <div class="input-row"><label>Insurance (life, home, health) (£)</label><input type="text" inputmode="decimal" id="e_ins"     value="3600"></div>
-          <div class="input-row"><label>Pension contributions (£)</label><input type="text" inputmode="decimal" id="e_pen"     value="24000"></div>
-          <div class="input-row"><label>ISA contributions (£)</label><input type="text" inputmode="decimal" id="e_isa"     value="18000"></div>
-          <div class="input-row"><label>Other savings / investments (£)</label><input type="text" inputmode="decimal" id="e_osav"    value="0"></div>
-          <div class="input-row"><label>One-off / irregular (£)</label><input type="text" inputmode="decimal" id="e_oneoff"  value="5000"></div>
+          <div class="input-row"><label>Total annual expenditure (£)</label><input type="text" inputmode="decimal" id="e_total" value="160,000"></div>
+          <p class="note">Inflated at the rate set in Assumptions each year.</p>
         </div>
       </div>
     </div>
@@ -456,11 +443,7 @@ function runCalc() {
     tART: v('t_art'),
     inf:  pct('r_inf'),
 
-    totExp:
-      v('e_housing') + v('e_maint')  + v('e_util')  + v('e_groc')  +
-      v('e_child')   + v('e_trans')  + v('e_hols')  + v('e_cloth') +
-      v('e_health')  + v('e_eat')    + v('e_ins')   + v('e_pen')   +
-      v('e_isa')     + v('e_osav')   + v('e_oneoff'),
+    totExp: v('e_total'),
   };
 
   const ddEach = inp.totExp / 2;
