@@ -30,79 +30,53 @@
     }
     header h1 { font-size: 18px; font-weight: 700; }
     header p  { font-size: 11px; opacity: .75; margin-top: 2px; }
-    .btn-calc {
-      background: var(--accent); color: #fff; border: none;
-      padding: 9px 22px; border-radius: 5px; font-size: 13px;
-      font-weight: 600; cursor: pointer; transition: background .15s;
-    }
-    .btn-calc:hover { background: #1a5e2a; }
+    .hdr-btns { display: flex; gap: 8px; }
+    .btn { border: none; padding: 9px 18px; border-radius: 5px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s; }
+    .btn-calc { background: var(--accent); color: #fff; }
+    .btn-calc:hover { background: #1559a0; }
+    .btn-save { background: #15803d; color: #fff; }
+    .btn-save:hover { background: #166534; }
 
     /* ── Tabs ── */
-    .tabs {
-      display: flex; gap: 2px; background: var(--navy);
-      padding: 0 24px;
-    }
+    .tabs { display: flex; gap: 2px; background: var(--navy); padding: 0 24px; }
     .tab {
       padding: 10px 20px; cursor: pointer; font-size: 13px; font-weight: 600;
-      color: rgba(255,255,255,.65); border-bottom: 3px solid transparent;
-      transition: all .15s;
+      color: rgba(255,255,255,.65); border-bottom: 3px solid transparent; transition: all .15s;
     }
-    .tab:hover  { color: #fff; }
+    .tab:hover { color: #fff; }
     .tab.active { color: #fff; border-bottom-color: #fff; }
-    .tab-panel  { display: none; }
+    .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
     /* ── Layout ── */
     main { max-width: 1440px; margin: 0 auto; padding: 20px 24px 40px; }
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .two-col  { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .four-col { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-    @media(max-width:900px) {
-      .two-col, .four-col { grid-template-columns: 1fr; }
-    }
+    @media(max-width:900px) { .two-col, .four-col { grid-template-columns: 1fr; } }
 
     /* ── Cards ── */
     .card { background: #fff; border: 1px solid var(--border); border-radius: 7px; margin-bottom: 16px; overflow: hidden; }
-    .card-hdr {
-      background: var(--navy); color: #fff;
-      padding: 9px 14px; font-size: 11px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .6px;
-    }
+    .card-hdr { background: var(--navy); color: #fff; padding: 9px 14px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; }
     .card-hdr.purple { background: var(--purple); }
     .card-hdr.green  { background: var(--green); }
     .card-body { padding: 14px; }
 
     /* ── Inputs ── */
-    .person-hdr {
-      background: var(--subhdr); color: var(--navy);
-      padding: 5px 10px; font-size: 11px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .5px;
-      border-radius: 4px; margin: 10px 0 8px;
-    }
+    .person-hdr { background: var(--subhdr); color: var(--navy); padding: 5px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; border-radius: 4px; margin: 10px 0 8px; }
     .person-hdr:first-child { margin-top: 0; }
-    .input-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 4px 0; border-bottom: 1px solid #f0f0f0;
-    }
+    .input-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid #f0f0f0; }
     .input-row:last-child { border-bottom: none; }
     .input-row label { font-size: 13px; flex: 1; padding-right: 8px; }
-    .input-row input {
-      width: 115px; text-align: right; border: 1px solid var(--border);
-      border-radius: 4px; padding: 4px 7px; font-size: 13px;
-      color: var(--blue-in); font-weight: 600;
-    }
+    .input-row input { width: 115px; text-align: right; border: 1px solid var(--border); border-radius: 4px; padding: 4px 7px; font-size: 13px; color: var(--blue-in); font-weight: 600; }
     .input-row input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(46,117,182,.2); }
     .radio-group { display: flex; gap: 14px; padding: 6px 0 4px; }
     .radio-group label { display: flex; align-items: center; gap: 4px; font-size: 13px; cursor: pointer; }
     .note { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 6px; }
 
     /* ── Metric cards ── */
-    .metric-card {
-      background: #fff; border: 1px solid var(--border); border-radius: 7px;
-      padding: 14px 16px; margin-bottom: 0;
-    }
+    .metric-card { background: #fff; border: 1px solid var(--border); border-radius: 7px; padding: 14px 16px; }
     .metric-card h3 { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin-bottom: 6px; }
-    .metric-val { font-size: 20px; font-weight: 700; color: var(--navy); }
-    .metric-val.sm { font-size: 16px; }
+    .metric-val { font-size: 16px; font-weight: 700; color: var(--navy); }
 
     /* ── Charts ── */
     .chart-card { background: #fff; border: 1px solid var(--border); border-radius: 7px; padding: 16px; margin-bottom: 16px; }
@@ -120,13 +94,21 @@
     tr:hover td { background: var(--subhdr); }
     .r { text-align: right; }
     .pos { color: var(--green); font-weight: 600; }
-    .neg { color: var(--red);   font-weight: 600; }
+    .neg { color: var(--red); font-weight: 600; }
     .bold td { font-weight: 700; background: var(--gray) !important; }
+
+    /* ── Compare tab ── */
+    .compare-empty { text-align: center; padding: 48px; color: var(--muted); font-size: 15px; }
+    .compare-empty p { margin-top: 8px; font-size: 13px; }
+    .btn-del { background: none; border: 1px solid #ccc; border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; color: var(--red); }
+    .btn-del:hover { background: #fee2e2; }
+    .compare-tbl th { white-space: normal; min-width: 100px; }
+    .compare-tbl .scenario-col { font-weight: 700; min-width: 140px; }
 
     /* ── Misc ── */
     .section-gap { margin-bottom: 20px; }
     .center-btn { text-align: center; padding: 12px 0 28px; }
-    .center-btn .btn-calc { font-size: 15px; padding: 12px 44px; }
+    .center-btn .btn { font-size: 15px; padding: 12px 44px; background: var(--accent); color: #fff; }
   </style>
 </head>
 <body>
@@ -134,15 +116,19 @@
 <header>
   <div>
     <h1>Wealth Plan — Chris &amp; Sophia</h1>
-    <p>30-year model · Scenario A: Annuity · Scenario B: Drawdown</p>
+    <p>30-year model · Scenario A: Annuity · Scenario B: Drawdown · Tax-adjusted income</p>
   </div>
-  <button class="btn-calc" onclick="runCalc()">Calculate ↻</button>
+  <div class="hdr-btns">
+    <button class="btn btn-save" onclick="saveScenario()">💾 Save Scenario</button>
+    <button class="btn btn-calc" onclick="runCalc()">Calculate ↻</button>
+  </div>
 </header>
 
 <div class="tabs">
   <div class="tab active" onclick="switchTab('inputs')">Inputs</div>
   <div class="tab" onclick="switchTab('results')">Results &amp; Charts</div>
   <div class="tab" onclick="switchTab('cashflow')">30-Year Detail</div>
+  <div class="tab" onclick="switchTab('compare')">Compare Scenarios</div>
 </div>
 
 <main>
@@ -156,7 +142,6 @@
       <div class="card">
         <div class="card-hdr">Asset Position</div>
         <div class="card-body">
-
           <div class="person-hdr">Chris</div>
           <div class="input-row"><label>Current age</label><input type="text" inputmode="decimal" id="c_age"  value="48"></div>
           <div class="input-row"><label>Retirement / stop-work age</label><input type="text" inputmode="decimal" id="c_ret"  value="58"></div>
@@ -165,7 +150,7 @@
           <div class="input-row"><label>Stocks &amp; Shares ISA (£)</label><input type="text" inputmode="decimal" id="c_isa"  value="60000"></div>
           <div class="input-row"><label>Non-ISA investments (£)</label><input type="text" inputmode="decimal" id="c_inv"  value="0"></div>
           <div class="input-row"><label>Cash savings (£)</label><input type="text" inputmode="decimal" id="c_cash" value="20000"></div>
-          <div class="input-row"><label>Cash interest rate (%)</label><input type="text" inputmode="decimal" id="c_cashr" value="4" step="0.1"></div>
+          <div class="input-row"><label>Cash interest rate (%)</label><input type="text" inputmode="decimal" id="c_cashr" value="4"></div>
 
           <div class="person-hdr">Sophia</div>
           <div class="input-row"><label>Current age</label><input type="text" inputmode="decimal" id="s_age"  value="38"></div>
@@ -175,11 +160,11 @@
           <div class="input-row"><label>Stocks &amp; Shares ISA (£)</label><input type="text" inputmode="decimal" id="s_isa"  value="20000"></div>
           <div class="input-row"><label>Non-ISA investments (£)</label><input type="text" inputmode="decimal" id="s_inv"  value="0"></div>
           <div class="input-row"><label>Cash savings (£)</label><input type="text" inputmode="decimal" id="s_cash" value="10000"></div>
-          <div class="input-row"><label>Cash interest rate (%)</label><input type="text" inputmode="decimal" id="s_cashr" value="4" step="0.1"></div>
+          <div class="input-row"><label>Cash interest rate (%)</label><input type="text" inputmode="decimal" id="s_cashr" value="4"></div>
 
           <div class="person-hdr">Shared Property</div>
           <div class="input-row"><label>Property equity (£)</label><input type="text" inputmode="decimal" id="prop"  value="500000"></div>
-          <div class="input-row"><label>Annual appreciation (%)</label><input type="text" inputmode="decimal" id="propr" value="3" step="0.1"></div>
+          <div class="input-row"><label>Annual appreciation (%)</label><input type="text" inputmode="decimal" id="propr" value="3"></div>
         </div>
       </div>
 
@@ -187,9 +172,9 @@
         <div class="card-hdr">Assumptions</div>
         <div class="card-body">
           <div class="person-hdr">Portfolio Growth Rate</div>
-          <div class="input-row"><label>Conservative (%)</label><input type="text" inputmode="decimal" id="r_con" value="4" step="0.1"></div>
-          <div class="input-row"><label>Moderate (%)</label><input type="text" inputmode="decimal" id="r_mod" value="6" step="0.1"></div>
-          <div class="input-row"><label>Optimistic (%)</label><input type="text" inputmode="decimal" id="r_opt" value="8" step="0.1"></div>
+          <div class="input-row"><label>Conservative (%)</label><input type="text" inputmode="decimal" id="r_con" value="4"></div>
+          <div class="input-row"><label>Moderate (%)</label><input type="text" inputmode="decimal" id="r_mod" value="6"></div>
+          <div class="input-row"><label>Optimistic (%)</label><input type="text" inputmode="decimal" id="r_opt" value="8"></div>
           <div class="radio-group">
             <label><input type="radio" name="growth_sel" value="con"> Conservative</label>
             <label><input type="radio" name="growth_sel" value="mod" checked> Moderate</label>
@@ -197,12 +182,18 @@
           </div>
 
           <div class="person-hdr">Annuity Rates (Scenario A)</div>
-          <div class="input-row"><label>Chris annuity rate (%)</label><input type="text" inputmode="decimal" id="c_ann" value="5.5" step="0.1"></div>
-          <div class="input-row"><label>Sophia annuity rate (%)</label><input type="text" inputmode="decimal" id="s_ann" value="5.0" step="0.1"></div>
+          <div class="input-row"><label>Chris annuity rate (%)</label><input type="text" inputmode="decimal" id="c_ann" value="5.5"></div>
+          <div class="input-row"><label>Sophia annuity rate (%)</label><input type="text" inputmode="decimal" id="s_ann" value="5.0"></div>
 
           <div class="person-hdr">State Pensions (from age 67)</div>
           <div class="input-row"><label>Chris state pension (£/yr)</label><input type="text" inputmode="decimal" id="state_c" value="11500"></div>
           <div class="input-row"><label>Sophia state pension (£/yr)</label><input type="text" inputmode="decimal" id="state_s" value="11500"></div>
+
+          <div class="person-hdr">UK Tax Thresholds (2024/25)</div>
+          <div class="input-row"><label>Personal allowance (£)</label><input type="text" inputmode="decimal" id="t_pa"  value="12570"></div>
+          <div class="input-row"><label>Basic rate threshold (£)</label><input type="text" inputmode="decimal" id="t_brt" value="50270"></div>
+          <div class="input-row"><label>Additional rate threshold (£)</label><input type="text" inputmode="decimal" id="t_art" value="125140"></div>
+          <p class="note">PA tapered above £100,000. Rates: 20% / 40% / 45%. Employee NI: 8% (£12,570–£50,270), 2% above.</p>
         </div>
       </div>
     </div>
@@ -210,17 +201,17 @@
     <!-- RIGHT: Income + Expenditure -->
     <div>
       <div class="card">
-        <div class="card-hdr">Income (Working Years)</div>
+        <div class="card-hdr">Income (Working Years — enter gross)</div>
         <div class="card-body">
           <div class="person-hdr">Chris</div>
           <div class="input-row"><label>Employment / consultancy (£/yr gross)</label><input type="text" inputmode="decimal" id="c_emp" value="180000"></div>
-          <div class="input-row"><label>Business income (£/yr)</label><input type="text" inputmode="decimal" id="c_biz" value="0"></div>
+          <div class="input-row"><label>Business income (£/yr gross)</label><input type="text" inputmode="decimal" id="c_biz" value="0"></div>
 
           <div class="person-hdr">Sophia</div>
           <div class="input-row"><label>Employment / consultancy (£/yr gross)</label><input type="text" inputmode="decimal" id="s_emp" value="40000"></div>
-          <div class="input-row"><label>Other income (£/yr)</label><input type="text" inputmode="decimal" id="other_inc" value="0"></div>
+          <div class="input-row"><label>Other income (£/yr — enter net)</label><input type="text" inputmode="decimal" id="other_inc" value="0"></div>
 
-          <p class="note">Employment income stops at each person's retirement age. Drawdown / annuity income begins at pension drawdown age.</p>
+          <p class="note">Income tax + NI deducted automatically. Pension &amp; annuity income taxed at retirement (no NI). ISA income is tax-free.</p>
         </div>
       </div>
 
@@ -248,42 +239,37 @@
   </div>
 
   <div class="center-btn">
-    <button class="btn-calc" onclick="runCalc()">Calculate →</button>
+    <button class="btn" onclick="runCalc()">Calculate →</button>
   </div>
 </div><!-- /tab-inputs -->
 
 
 <!-- ══════════════════════════════════════════════ RESULTS ═══ -->
 <div id="tab-results" class="tab-panel">
-
-  <!-- Key metrics strip -->
   <div class="four-col section-gap" id="metrics-grid"></div>
 
-  <!-- Charts row 1: Net Worth + Surplus -->
   <div class="two-col section-gap">
     <div class="chart-card">
       <h3>Net Worth Over 30 Years</h3>
       <div class="chart-wrap"><canvas id="chart-nw"></canvas></div>
     </div>
     <div class="chart-card">
-      <h3>Annual Surplus / (Deficit)</h3>
+      <h3>Annual Surplus / (Deficit) — Net of Tax</h3>
       <div class="chart-wrap"><canvas id="chart-surp"></canvas></div>
     </div>
   </div>
 
-  <!-- Charts row 2: Income vs Exp -->
   <div class="two-col section-gap">
     <div class="chart-card">
-      <h3>Income vs Expenditure — Scenario A (Annuity)</h3>
+      <h3>Income (net) vs Expenditure — Scenario A (Annuity)</h3>
       <div class="chart-wrap"><canvas id="chart-inc-a"></canvas></div>
     </div>
     <div class="chart-card">
-      <h3>Income vs Expenditure — Scenario B (Drawdown)</h3>
+      <h3>Income (net) vs Expenditure — Scenario B (Drawdown)</h3>
       <div class="chart-wrap"><canvas id="chart-inc-b"></canvas></div>
     </div>
   </div>
 
-  <!-- Charts row 3: Asset breakdown -->
   <div class="two-col section-gap">
     <div class="chart-card">
       <h3>Asset Breakdown — Scenario A</h3>
@@ -294,80 +280,77 @@
       <div class="chart-wrap"><canvas id="chart-assets-b"></canvas></div>
     </div>
   </div>
-
-
 </div><!-- /tab-results -->
 
 
 <!-- ═════════════════════════════════════════ 30-YEAR DETAIL ═══ -->
 <div id="tab-cashflow" class="tab-panel">
   <div class="two-col">
-
     <div class="card">
       <div class="card-hdr purple">Scenario A — Annuity</div>
       <div class="tbl-wrap">
         <table>
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th class="r">Chris</th>
-              <th class="r">Sophia</th>
-              <th class="r">Net Worth</th>
-              <th class="r">Income</th>
-              <th class="r">Expenditure</th>
-              <th class="r">Surplus</th>
-              <th class="r">Cumulative</th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>Year</th><th class="r">Chris</th><th class="r">Sophia</th>
+            <th class="r">Net Worth</th><th class="r">Net Income</th>
+            <th class="r">Tax (C+S)</th><th class="r">Expenditure</th>
+            <th class="r">Surplus</th><th class="r">Cumulative</th>
+          </tr></thead>
           <tbody id="body-a"></tbody>
         </table>
       </div>
     </div>
-
     <div class="card">
       <div class="card-hdr green">Scenario B — Drawdown</div>
       <div class="tbl-wrap">
         <table>
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th class="r">Chris</th>
-              <th class="r">Sophia</th>
-              <th class="r">Net Worth</th>
-              <th class="r">Income</th>
-              <th class="r">Expenditure</th>
-              <th class="r">Surplus</th>
-              <th class="r">Cumulative</th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>Year</th><th class="r">Chris</th><th class="r">Sophia</th>
+            <th class="r">Net Worth</th><th class="r">Net Income</th>
+            <th class="r">Tax (C+S)</th><th class="r">Expenditure</th>
+            <th class="r">Surplus</th><th class="r">Cumulative</th>
+          </tr></thead>
           <tbody id="body-b"></tbody>
         </table>
       </div>
     </div>
-
   </div>
 </div><!-- /tab-cashflow -->
+
+
+<!-- ══════════════════════════════════════════ COMPARE ═══ -->
+<div id="tab-compare" class="tab-panel">
+  <div id="compare-container">
+    <div class="compare-empty">
+      <strong>No saved scenarios yet</strong>
+      <p>Run a calculation then click <strong>💾 Save Scenario</strong> to compare different assumptions.</p>
+    </div>
+  </div>
+</div><!-- /tab-compare -->
 
 </main>
 
 <script>
 // ─────────────────────────────────────────────────────────────
-// Utilities
+// Constants
 // ─────────────────────────────────────────────────────────────
 const N = 30;
 const START_YEAR = 2026;
 const YEARS = Array.from({length: N}, (_, i) => START_YEAR + i);
-
 const charts = {};
+let lastA, lastB, lastInp;
+let savedScenarios = JSON.parse(localStorage.getItem('wealthScenarios') || '[]');
 
-function v(id)    { return parseFloat(document.getElementById(id).value.replace(/,/g, '')) || 0; }
-function pct(id)  { return v(id) / 100; }
+// ─────────────────────────────────────────────────────────────
+// Input helpers
+// ─────────────────────────────────────────────────────────────
+function v(id)   { return parseFloat(document.getElementById(id).value.replace(/,/g, '')) || 0; }
+function pct(id) { return v(id) / 100; }
 
 function addCommas(n) {
   if (n === '' || n == null) return '';
   const num = parseFloat(String(n).replace(/,/g, ''));
   if (isNaN(num)) return n;
-  // Preserve decimals for percentage fields
   const parts = String(num).split('.');
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   return parts.join('.');
@@ -375,16 +358,9 @@ function addCommas(n) {
 
 function initInputFormatting() {
   document.querySelectorAll('.input-row input').forEach(inp => {
-    // Format initial value
     inp.value = addCommas(inp.value);
-    // Strip commas on focus so user can edit cleanly
-    inp.addEventListener('focus', function() {
-      this.value = this.value.replace(/,/g, '');
-    });
-    // Re-add commas on blur
-    inp.addEventListener('blur', function() {
-      this.value = addCommas(this.value);
-    });
+    inp.addEventListener('focus', function() { this.value = this.value.replace(/,/g, ''); });
+    inp.addEventListener('blur',  function() { this.value = addCommas(this.value); });
   });
 }
 
@@ -393,20 +369,52 @@ function getGR() {
   return sel === 'con' ? pct('r_con') : sel === 'opt' ? pct('r_opt') : pct('r_mod');
 }
 
-function gbp(n, compact = false) {
+function getGRLabel() {
+  return document.querySelector('input[name="growth_sel"]:checked').value.charAt(0).toUpperCase() +
+         document.querySelector('input[name="growth_sel"]:checked').value.slice(1);
+}
+
+// ─────────────────────────────────────────────────────────────
+// UK Tax & NI (2024/25 simplified)
+// ─────────────────────────────────────────────────────────────
+function calcIncomeTax(gross, pa, brt, art) {
+  // Taper personal allowance above £100,000
+  const effectivePA = Math.max(0, pa - Math.max(0, gross - 100000) / 2);
+  const taxable = Math.max(0, gross - effectivePA);
+  const basicBand   = brt - pa;          // ~£37,700
+  const higherBand  = art - brt;         // ~£74,870
+  let tax = 0;
+  tax += Math.min(taxable, basicBand) * 0.20;
+  if (taxable > basicBand)  tax += Math.min(taxable - basicBand, higherBand) * 0.40;
+  if (taxable > basicBand + higherBand) tax += (taxable - basicBand - higherBand) * 0.45;
+  return tax;
+}
+
+function calcNI(empGross) {
+  // Employee NI 2024/25
+  let ni = 0;
+  if (empGross > 12570) ni += Math.min(empGross - 12570, 50270 - 12570) * 0.08;
+  if (empGross > 50270) ni += (empGross - 50270) * 0.02;
+  return ni;
+}
+
+function netIncome(gross, empGross, pa, brt, art) {
+  // gross = total taxable income, empGross = employment portion (NI applicable)
+  return gross - calcIncomeTax(gross, pa, brt, art) - calcNI(empGross);
+}
+
+// ─────────────────────────────────────────────────────────────
+// Display helpers
+// ─────────────────────────────────────────────────────────────
+function gbp(n) {
   if (n == null || isNaN(n)) return '—';
   const abs = Math.abs(Math.round(n));
-  const str = compact
-    ? (abs >= 1e6 ? '£' + (abs/1e6).toFixed(1) + 'm' : '£' + (abs/1e3).toFixed(0) + 'k')
-    : '£' + abs.toLocaleString('en-GB');
+  const str = '£' + abs.toLocaleString('en-GB');
   return n < 0 ? '(' + str + ')' : str;
 }
-
 function surpClass(n) { return n >= 0 ? 'pos' : 'neg'; }
-
-function destroyChart(id) {
-  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
-}
+function inRange(i)   { return i >= 0 && i < N; }
+function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
 
 function makeData() {
   return {
@@ -414,9 +422,8 @@ function makeData() {
     cPen:[], cISA:[], cInv:[], cCash:[],
     sPen:[], sISA:[], sInv:[], sCash:[],
     prop:[], nw:[],
-    cEmp:[], cBiz:[], sEmp:[],
+    cGross:[], sGross:[], cTax:[], sTax:[],
     cAnn:[], sAnn:[], cDD:[], sDD:[],
-    stateC:[], stateS:[], otherInc:[],
     totInc:[], totExp:[], surp:[], cum:[]
   };
 }
@@ -440,15 +447,18 @@ function runCalc() {
     stateC: v('state_c'), stateS: v('state_s'),
     gr: getGR(),
 
+    tPA:  v('t_pa'),
+    tBRT: v('t_brt'),
+    tART: v('t_art'),
+
     totExp:
-      v('e_housing') + v('e_maint')  + v('e_util')   + v('e_groc')  +
-      v('e_child')   + v('e_trans')  + v('e_hols')   + v('e_cloth') +
-      v('e_health')  + v('e_eat')    + v('e_ins')    + v('e_pen')   +
+      v('e_housing') + v('e_maint')  + v('e_util')  + v('e_groc')  +
+      v('e_child')   + v('e_trans')  + v('e_hols')  + v('e_cloth') +
+      v('e_health')  + v('e_eat')    + v('e_ins')   + v('e_pen')   +
       v('e_isa')     + v('e_osav')   + v('e_oneoff'),
   };
 
-  const ddEach = inp.totExp / 2; // per-person drawdown in Scenario B
-
+  const ddEach = inp.totExp / 2;
   const A = makeData();
   const B = makeData();
 
@@ -458,102 +468,105 @@ function runCalc() {
     A.cAge[i] = cAge; A.sAge[i] = sAge;
     B.cAge[i] = cAge; B.sAge[i] = sAge;
 
-    // ── Scenario A assets ──────────────────────────────────────
+    // ── Assets (same logic for A and B except pension drawdown) ───────────
     if (i === 0) {
-      A.cPen[0]  = inp.cPen;  A.cISA[0] = inp.cISA; A.cInv[0] = inp.cInv; A.cCash[0] = inp.cCash;
-      A.sPen[0]  = inp.sPen;  A.sISA[0] = inp.sISA; A.sInv[0] = inp.sInv; A.sCash[0] = inp.sCash;
-      A.prop[0]  = inp.prop;
+      A.cPen[0]=inp.cPen; A.cISA[0]=inp.cISA; A.cInv[0]=inp.cInv; A.cCash[0]=inp.cCash;
+      A.sPen[0]=inp.sPen; A.sISA[0]=inp.sISA; A.sInv[0]=inp.sInv; A.sCash[0]=inp.sCash;
+      A.prop[0]=inp.prop;
+      B.cPen[0]=inp.cPen; B.cISA[0]=inp.cISA; B.cInv[0]=inp.cInv; B.cCash[0]=inp.cCash;
+      B.sPen[0]=inp.sPen; B.sISA[0]=inp.sISA; B.sInv[0]=inp.sInv; B.sCash[0]=inp.sCash;
+      B.prop[0]=inp.prop;
     } else {
-      A.cPen[i]  = cAge >= inp.cDD ? 0 : A.cPen[i-1]  * (1 + inp.gr);
+      // Scenario A: pension drops to 0 at drawdown (converted to annuity)
+      A.cPen[i]  = cAge >= inp.cDD ? 0 : A.cPen[i-1] * (1 + inp.gr);
       A.cISA[i]  = A.cISA[i-1]  * (1 + inp.gr);
       A.cInv[i]  = A.cInv[i-1]  * (1 + inp.gr);
       A.cCash[i] = A.cCash[i-1] * (1 + inp.cCashR);
-      A.sPen[i]  = sAge >= inp.sDD ? 0 : A.sPen[i-1]  * (1 + inp.gr);
+      A.sPen[i]  = sAge >= inp.sDD ? 0 : A.sPen[i-1] * (1 + inp.gr);
       A.sISA[i]  = A.sISA[i-1]  * (1 + inp.gr);
       A.sInv[i]  = A.sInv[i-1]  * (1 + inp.gr);
       A.sCash[i] = A.sCash[i-1] * (1 + inp.sCashR);
       A.prop[i]  = A.prop[i-1]  * (1 + inp.propR);
-    }
-    A.nw[i] = A.cPen[i]+A.cISA[i]+A.cInv[i]+A.cCash[i]+A.sPen[i]+A.sISA[i]+A.sInv[i]+A.sCash[i]+A.prop[i];
 
-    // ── Scenario A income ──────────────────────────────────────
-    A.cEmp[i]     = cAge < inp.cRet ? inp.cEmp  : 0;
-    A.cBiz[i]     = cAge < inp.cRet ? inp.cBiz  : 0;
-    A.sEmp[i]     = sAge < inp.sRet ? inp.sEmp  : 0;
-    A.stateC[i]   = cAge >= 67 ? inp.stateC : 0;
-    A.stateS[i]   = sAge >= 67 ? inp.stateS : 0;
-    A.otherInc[i] = inp.otherInc;
-
-    // Annuity: computed once at drawdown year, then fixed forever
-    if (cAge < inp.cDD) {
-      A.cAnn[i] = 0;
-    } else if (cAge === inp.cDD) {
-      const potGrown = i === 0 ? inp.cPen : A.cPen[i-1] * (1 + inp.gr);
-      A.cAnn[i] = potGrown * inp.cAnn;
-    } else {
-      A.cAnn[i] = A.cAnn[i-1];
-    }
-    if (sAge < inp.sDD) {
-      A.sAnn[i] = 0;
-    } else if (sAge === inp.sDD) {
-      const potGrown = i === 0 ? inp.sPen : A.sPen[i-1] * (1 + inp.gr);
-      A.sAnn[i] = potGrown * inp.sAnn;
-    } else {
-      A.sAnn[i] = A.sAnn[i-1];
-    }
-
-    A.totInc[i] = A.cEmp[i]+A.cBiz[i]+A.sEmp[i]+A.cAnn[i]+A.sAnn[i]+A.stateC[i]+A.stateS[i]+A.otherInc[i];
-    A.totExp[i] = inp.totExp;
-    A.surp[i]   = A.totInc[i] - A.totExp[i];
-    A.cum[i]    = i === 0 ? A.surp[0] : A.cum[i-1] + A.surp[i];
-
-    // ── Scenario B assets ──────────────────────────────────────
-    if (i === 0) {
-      B.cPen[0]  = inp.cPen;  B.cISA[0] = inp.cISA; B.cInv[0] = inp.cInv; B.cCash[0] = inp.cCash;
-      B.sPen[0]  = inp.sPen;  B.sISA[0] = inp.sISA; B.sInv[0] = inp.sInv; B.sCash[0] = inp.sCash;
-      B.prop[0]  = inp.prop;
-    } else {
-      const cGrown = B.cPen[i-1] * (1 + inp.gr);
-      const sGrown = B.sPen[i-1] * (1 + inp.gr);
-      B.cPen[i]  = cAge >= inp.cDD ? Math.max(0, cGrown - ddEach) : cGrown;
+      // Scenario B: pension grows then drawdown deducted
+      const cG = B.cPen[i-1] * (1 + inp.gr);
+      const sG = B.sPen[i-1] * (1 + inp.gr);
+      B.cPen[i]  = cAge >= inp.cDD ? Math.max(0, cG - ddEach) : cG;
       B.cISA[i]  = B.cISA[i-1]  * (1 + inp.gr);
       B.cInv[i]  = B.cInv[i-1]  * (1 + inp.gr);
       B.cCash[i] = B.cCash[i-1] * (1 + inp.cCashR);
-      B.sPen[i]  = sAge >= inp.sDD ? Math.max(0, sGrown - ddEach) : sGrown;
+      B.sPen[i]  = sAge >= inp.sDD ? Math.max(0, sG - ddEach) : sG;
       B.sISA[i]  = B.sISA[i-1]  * (1 + inp.gr);
       B.sInv[i]  = B.sInv[i-1]  * (1 + inp.gr);
       B.sCash[i] = B.sCash[i-1] * (1 + inp.sCashR);
       B.prop[i]  = B.prop[i-1]  * (1 + inp.propR);
     }
+
+    A.nw[i] = A.cPen[i]+A.cISA[i]+A.cInv[i]+A.cCash[i]+A.sPen[i]+A.sISA[i]+A.sInv[i]+A.sCash[i]+A.prop[i];
     B.nw[i] = B.cPen[i]+B.cISA[i]+B.cInv[i]+B.cCash[i]+B.sPen[i]+B.sISA[i]+B.sInv[i]+B.sCash[i]+B.prop[i];
 
-    // ── Scenario B income ──────────────────────────────────────
-    B.cEmp[i]     = cAge < inp.cRet ? inp.cEmp  : 0;
-    B.cBiz[i]     = cAge < inp.cRet ? inp.cBiz  : 0;
-    B.sEmp[i]     = sAge < inp.sRet ? inp.sEmp  : 0;
-    B.stateC[i]   = cAge >= 67 ? inp.stateC : 0;
-    B.stateS[i]   = sAge >= 67 ? inp.stateS : 0;
-    B.otherInc[i] = inp.otherInc;
+    // ── Scenario A income ──────────────────────────────────────────────────
+    const cEmpA = cAge < inp.cRet ? inp.cEmp + inp.cBiz : 0;
+    const sEmpA = sAge < inp.sRet ? inp.sEmp : 0;
+    const stCa  = cAge >= 67 ? inp.stateC : 0;
+    const stSa  = sAge >= 67 ? inp.stateS : 0;
+
+    // Annuity: fixed at drawdown year
+    if      (cAge < inp.cDD)  { A.cAnn[i] = 0; }
+    else if (cAge === inp.cDD){ const pot = i===0 ? inp.cPen : A.cPen[i-1]*(1+inp.gr); A.cAnn[i] = pot * inp.cAnn; }
+    else                      { A.cAnn[i] = A.cAnn[i-1]; }
+
+    if      (sAge < inp.sDD)  { A.sAnn[i] = 0; }
+    else if (sAge === inp.sDD){ const pot = i===0 ? inp.sPen : A.sPen[i-1]*(1+inp.gr); A.sAnn[i] = pot * inp.sAnn; }
+    else                      { A.sAnn[i] = A.sAnn[i-1]; }
+
+    // Per-person gross → net (tax + NI on employment, tax only on pension/state)
+    const cGrossA = cEmpA + A.cAnn[i] + stCa;
+    const sGrossA = sEmpA + A.sAnn[i] + stSa;
+    const cTaxA   = calcIncomeTax(cGrossA, inp.tPA, inp.tBRT, inp.tART) + calcNI(cEmpA);
+    const sTaxA   = calcIncomeTax(sGrossA, inp.tPA, inp.tBRT, inp.tART) + calcNI(sEmpA);
+
+    A.cGross[i] = cGrossA; A.sGross[i] = sGrossA;
+    A.cTax[i]   = cTaxA;   A.sTax[i]   = sTaxA;
+    A.totInc[i] = (cGrossA - cTaxA) + (sGrossA - sTaxA) + inp.otherInc;
+    A.totExp[i] = inp.totExp;
+    A.surp[i]   = A.totInc[i] - A.totExp[i];
+    A.cum[i]    = i === 0 ? A.surp[0] : A.cum[i-1] + A.surp[i];
+
+    // ── Scenario B income ──────────────────────────────────────────────────
+    const cEmpB = cAge < inp.cRet ? inp.cEmp + inp.cBiz : 0;
+    const sEmpB = sAge < inp.sRet ? inp.sEmp : 0;
+    const stCb  = cAge >= 67 ? inp.stateC : 0;
+    const stSb  = sAge >= 67 ? inp.stateS : 0;
 
     if (cAge >= inp.cDD) {
-      const available = i === 0 ? inp.cPen : B.cPen[i-1] * (1 + inp.gr);
-      B.cDD[i] = Math.min(ddEach, available);
+      const avail = i === 0 ? inp.cPen : B.cPen[i-1] * (1 + inp.gr);
+      B.cDD[i] = Math.min(ddEach, avail);
     } else { B.cDD[i] = 0; }
 
     if (sAge >= inp.sDD) {
-      const available = i === 0 ? inp.sPen : B.sPen[i-1] * (1 + inp.gr);
-      B.sDD[i] = Math.min(ddEach, available);
+      const avail = i === 0 ? inp.sPen : B.sPen[i-1] * (1 + inp.gr);
+      B.sDD[i] = Math.min(ddEach, avail);
     } else { B.sDD[i] = 0; }
 
-    B.totInc[i] = B.cEmp[i]+B.cBiz[i]+B.sEmp[i]+B.cDD[i]+B.sDD[i]+B.stateC[i]+B.stateS[i]+B.otherInc[i];
+    const cGrossB = cEmpB + B.cDD[i] + stCb;
+    const sGrossB = sEmpB + B.sDD[i] + stSb;
+    const cTaxB   = calcIncomeTax(cGrossB, inp.tPA, inp.tBRT, inp.tART) + calcNI(cEmpB);
+    const sTaxB   = calcIncomeTax(sGrossB, inp.tPA, inp.tBRT, inp.tART) + calcNI(sEmpB);
+
+    B.cGross[i] = cGrossB; B.sGross[i] = sGrossB;
+    B.cTax[i]   = cTaxB;   B.sTax[i]   = sTaxB;
+    B.totInc[i] = (cGrossB - cTaxB) + (sGrossB - sTaxB) + inp.otherInc;
     B.totExp[i] = inp.totExp;
     B.surp[i]   = B.totInc[i] - B.totExp[i];
     B.cum[i]    = i === 0 ? B.surp[0] : B.cum[i-1] + B.surp[i];
   }
 
+  lastA = A; lastB = B; lastInp = inp;
+
   renderMetrics(A, B, inp);
   renderCharts(A, B);
-  renderTables(A, B);
+  renderTables(A, B, inp);
   switchTab('results');
 }
 
@@ -562,131 +575,120 @@ function runCalc() {
 // ─────────────────────────────────────────────────────────────
 function renderMetrics(A, B, inp) {
   const ri = inp.cRet - inp.cAge;
+  // Estimate annual tax at current income
+  const cTaxNow = calcIncomeTax(inp.cEmp + inp.cBiz, inp.tPA, inp.tBRT, inp.tART) + calcNI(inp.cEmp + inp.cBiz);
+  const sTaxNow = calcIncomeTax(inp.sEmp, inp.tPA, inp.tBRT, inp.tART) + calcNI(inp.sEmp);
+
   const vals = [
-    { label: 'Net Worth Today',             val: gbp(A.nw[0]) },
-    { label: `NW at Chris Ret (Scen A)`,    val: inRange(ri) ? gbp(A.nw[ri]) : '—' },
-    { label: `NW at Chris Ret (Scen B)`,    val: inRange(ri) ? gbp(B.nw[ri]) : '—' },
-    { label: 'Annual Expenditure',           val: gbp(inp.totExp) },
-    { label: 'Portfolio needed (4% rule)',   val: gbp(inp.totExp / 0.04) },
-    { label: 'NW in 10 years (Scen A)',      val: gbp(A.nw[9]) },
-    { label: 'NW in 20 years (Scen A)',      val: gbp(A.nw[19]) },
-    { label: 'NW in 30 years (Scen A)',      val: gbp(A.nw[29]) },
+    { label: 'Net Worth Today',                  val: gbp(A.nw[0]) },
+    { label: 'NW at Chris Ret — Scen A',         val: inRange(ri) ? gbp(A.nw[ri]) : '—' },
+    { label: 'NW at Chris Ret — Scen B',         val: inRange(ri) ? gbp(B.nw[ri]) : '—' },
+    { label: 'Annual Expenditure',               val: gbp(inp.totExp) },
+    { label: 'Est. Chris tax + NI (now)',        val: gbp(cTaxNow) },
+    { label: 'Est. Sophia tax + NI (now)',       val: gbp(sTaxNow) },
+    { label: 'NW in 10 years — Scen A',          val: gbp(A.nw[9]) },
+    { label: 'NW in 20 years — Scen A',          val: gbp(A.nw[19]) },
   ];
   document.getElementById('metrics-grid').innerHTML = vals.map(m =>
-    `<div class="metric-card"><h3>${m.label}</h3><div class="metric-val sm">${m.val}</div></div>`
+    `<div class="metric-card"><h3>${m.label}</h3><div class="metric-val">${m.val}</div></div>`
   ).join('');
 }
-
-function inRange(i) { return i >= 0 && i < N; }
 
 // ─────────────────────────────────────────────────────────────
 // Charts
 // ─────────────────────────────────────────────────────────────
-const PURPLE = 'rgba(107,70,193,1)';
+const PURPLE   = 'rgba(107,70,193,1)';
 const PURPLE_L = 'rgba(107,70,193,0.12)';
-const GREEN  = 'rgba(26,94,42,1)';
-const GREEN_L = 'rgba(26,94,42,0.12)';
-const BLUE   = 'rgba(46,117,182,1)';
-const AMBER  = 'rgba(212,160,23,1)';
+const GREEN    = 'rgba(26,94,42,1)';
+const GREEN_L  = 'rgba(26,94,42,0.12)';
+const BLUE     = 'rgba(46,117,182,1)';
+const AMBER    = 'rgba(212,160,23,1)';
 
-function yAxis() {
-  return {
-    ticks: {
-      font: { size: 10 },
-      callback: v => {
-        const a = Math.abs(v);
-        if (a >= 1e6) return (v < 0 ? '-' : '') + '£' + (a/1e6).toFixed(1) + 'm';
-        if (a >= 1e3) return (v < 0 ? '-' : '') + '£' + (a/1e3).toFixed(0) + 'k';
-        return '£' + v;
-      }
-    }
-  };
+function yAxisFmt() {
+  return { ticks: { font: { size: 10 }, callback: val => {
+    const a = Math.abs(val);
+    const pfx = val < 0 ? '-' : '';
+    if (a >= 1e6) return pfx + '£' + (a/1e6).toFixed(1) + 'm';
+    if (a >= 1e3) return pfx + '£' + (a/1e3).toFixed(0) + 'k';
+    return pfx + '£' + a;
+  }}};
 }
 
-function commonOpts(stacked = false) {
+function commonOpts() {
   return {
-    responsive: true,
-    maintainAspectRatio: false,
+    responsive: true, maintainAspectRatio: false,
     plugins: { legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12 } } },
-    scales: {
-      x: { ticks: { font: { size: 10 }, maxRotation: 45 }, stacked },
-      y: { ...yAxis(), stacked }
-    }
+    scales: { x: { ticks: { font: { size: 10 }, maxRotation: 45 } }, y: yAxisFmt() }
   };
 }
 
 function renderCharts(A, B) {
   const lbls = YEARS.map(String);
 
-  // 1. Net Worth
   destroyChart('nw');
   charts['nw'] = new Chart(document.getElementById('chart-nw'), {
     type: 'line',
     data: { labels: lbls, datasets: [
-      { label: 'Scen A — Annuity',  data: A.nw, borderColor: PURPLE, backgroundColor: PURPLE_L, fill: false, tension: 0.3, pointRadius: 2 },
-      { label: 'Scen B — Drawdown', data: B.nw, borderColor: GREEN,  backgroundColor: GREEN_L,  fill: false, tension: 0.3, pointRadius: 2 },
+      { label: 'Scen A — Annuity',  data: A.nw, borderColor: PURPLE, fill: false, tension: 0.3, pointRadius: 2 },
+      { label: 'Scen B — Drawdown', data: B.nw, borderColor: GREEN,  fill: false, tension: 0.3, pointRadius: 2 },
     ]},
     options: commonOpts()
   });
 
-  // 2. Annual Surplus
   destroyChart('surp');
   charts['surp'] = new Chart(document.getElementById('chart-surp'), {
     type: 'bar',
     data: { labels: lbls, datasets: [
       { label: 'Scen A', data: A.surp, backgroundColor: A.surp.map(v => v >= 0 ? 'rgba(107,70,193,0.75)' : 'rgba(185,28,28,0.65)'), borderRadius: 2 },
-      { label: 'Scen B', data: B.surp, backgroundColor: B.surp.map(v => v >= 0 ? 'rgba(26,94,42,0.75)'  : 'rgba(185,28,28,0.65)'), borderRadius: 2 },
+      { label: 'Scen B', data: B.surp, backgroundColor: B.surp.map(v => v >= 0 ? 'rgba(26,94,42,0.75)'   : 'rgba(185,28,28,0.65)'), borderRadius: 2 },
     ]},
     options: commonOpts()
   });
 
-  // 3 & 4. Income vs Expenditure
   [['inc-a', A], ['inc-b', B]].forEach(([id, d]) => {
     destroyChart(id);
     charts[id] = new Chart(document.getElementById('chart-' + id), {
       type: 'line',
       data: { labels: lbls, datasets: [
-        { label: 'Total Income',      data: d.totInc, borderColor: BLUE,  fill: false, tension: 0.3, pointRadius: 2 },
-        { label: 'Total Expenditure', data: d.totExp, borderColor: AMBER, fill: false, tension: 0.3, pointRadius: 2, borderDash: [6,3] },
+        { label: 'Net Income',    data: d.totInc, borderColor: BLUE,  fill: false, tension: 0.3, pointRadius: 2 },
+        { label: 'Expenditure',   data: d.totExp, borderColor: AMBER, fill: false, tension: 0.3, pointRadius: 2, borderDash: [6,3] },
       ]},
       options: commonOpts()
     });
   });
 
-  // 5 & 6. Asset Breakdown (stacked area)
-  function assetDatasets(d) {
-    return [
-      { label: 'Chris Pension',  data: d.cPen, borderColor: PURPLE, backgroundColor: 'rgba(107,70,193,0.25)', fill: true, tension: 0.3, pointRadius: 0 },
-      { label: 'Chris ISA',      data: d.cISA, borderColor: BLUE,   backgroundColor: 'rgba(46,117,182,0.25)',  fill: true, tension: 0.3, pointRadius: 0 },
-      { label: 'Sophia Pension', data: d.sPen, borderColor: AMBER,  backgroundColor: 'rgba(212,160,23,0.25)',  fill: true, tension: 0.3, pointRadius: 0 },
-      { label: 'Property',       data: d.prop, borderColor: GREEN,  backgroundColor: 'rgba(26,94,42,0.25)',    fill: true, tension: 0.3, pointRadius: 0 },
-    ];
-  }
   ['assets-a', 'assets-b'].forEach((id, si) => {
+    const d = si === 0 ? A : B;
     destroyChart(id);
     charts[id] = new Chart(document.getElementById('chart-' + id), {
       type: 'line',
-      data: { labels: lbls, datasets: assetDatasets(si === 0 ? A : B) },
+      data: { labels: lbls, datasets: [
+        { label: 'Chris Pension',  data: d.cPen, borderColor: PURPLE, backgroundColor: 'rgba(107,70,193,0.2)', fill: true, tension: 0.3, pointRadius: 0 },
+        { label: 'Chris ISA',      data: d.cISA, borderColor: BLUE,   backgroundColor: 'rgba(46,117,182,0.2)',  fill: true, tension: 0.3, pointRadius: 0 },
+        { label: 'Sophia Pension', data: d.sPen, borderColor: AMBER,  backgroundColor: 'rgba(212,160,23,0.2)',  fill: true, tension: 0.3, pointRadius: 0 },
+        { label: 'Property',       data: d.prop, borderColor: GREEN,  backgroundColor: 'rgba(26,94,42,0.2)',    fill: true, tension: 0.3, pointRadius: 0 },
+      ]},
       options: commonOpts()
     });
   });
 }
 
-
 // ─────────────────────────────────────────────────────────────
-// 30-year detail tables
+// 30-year tables
 // ─────────────────────────────────────────────────────────────
-function renderTables(A, B) {
+function renderTables(A, B, inp) {
   ['a','b'].forEach(s => {
     const d = s === 'a' ? A : B;
     document.getElementById('body-' + s).innerHTML = YEARS.map((yr, i) => {
-      const isCRetYear = d.cAge[i] === (s === 'a' ? parseInt(document.getElementById('c_ret').value) : parseInt(document.getElementById('c_ret').value));
-      return `<tr class="${isCRetYear ? 'bold' : ''}">
+      const highlight = d.cAge[i] === inp.cRet;
+      const tax = d.cTax[i] + d.sTax[i];
+      return `<tr class="${highlight ? 'bold' : ''}">
         <td>${yr}</td>
         <td class="r">${d.cAge[i]}</td>
         <td class="r">${d.sAge[i]}</td>
         <td class="r">${gbp(d.nw[i])}</td>
         <td class="r">${gbp(d.totInc[i])}</td>
+        <td class="r neg">${gbp(tax)}</td>
         <td class="r">${gbp(d.totExp[i])}</td>
         <td class="r ${surpClass(d.surp[i])}">${gbp(d.surp[i])}</td>
         <td class="r ${surpClass(d.cum[i])}">${gbp(d.cum[i])}</td>
@@ -696,20 +698,134 @@ function renderTables(A, B) {
 }
 
 // ─────────────────────────────────────────────────────────────
+// Save & Compare Scenarios
+// ─────────────────────────────────────────────────────────────
+function saveScenario() {
+  if (!lastA) { alert('Run a calculation first.'); return; }
+  const name = prompt('Name this scenario:', 'Scenario ' + (savedScenarios.length + 1));
+  if (!name) return;
+
+  const ri = lastInp.cRet - lastInp.cAge;
+  savedScenarios.push({
+    name,
+    saved: new Date().toLocaleString('en-GB', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}),
+    grLabel: getGRLabel(),
+    gr: (lastInp.gr * 100).toFixed(1) + '%',
+    cRet: lastInp.cRet,
+    sRet: lastInp.sRet,
+    cDD:  lastInp.cDD,
+    totExp: lastInp.totExp,
+    nwToday:   lastA.nw[0],
+    nwCRetA:   inRange(ri) ? lastA.nw[ri] : null,
+    nwCRetB:   inRange(ri) ? lastB.nw[ri] : null,
+    nw10A:     lastA.nw[9],
+    nw10B:     lastB.nw[9],
+    nw20A:     lastA.nw[19],
+    nw20B:     lastB.nw[19],
+    surpCRetA: inRange(ri) ? lastA.surp[ri] : null,
+    surpCRetB: inRange(ri) ? lastB.surp[ri] : null,
+    cum30A:    lastA.cum[N-1],
+    cum30B:    lastB.cum[N-1],
+  });
+
+  try { localStorage.setItem('wealthScenarios', JSON.stringify(savedScenarios)); } catch(e) {}
+  renderCompare();
+  switchTab('compare');
+}
+
+function deleteScenario(idx) {
+  savedScenarios.splice(idx, 1);
+  try { localStorage.setItem('wealthScenarios', JSON.stringify(savedScenarios)); } catch(e) {}
+  renderCompare();
+}
+
+function clearAllScenarios() {
+  if (!confirm('Clear all saved scenarios?')) return;
+  savedScenarios = [];
+  try { localStorage.removeItem('wealthScenarios'); } catch(e) {}
+  renderCompare();
+}
+
+function renderCompare() {
+  const el = document.getElementById('compare-container');
+  if (savedScenarios.length === 0) {
+    el.innerHTML = `<div class="compare-empty"><strong>No saved scenarios yet</strong><p>Run a calculation then click <strong>💾 Save Scenario</strong> to compare different assumptions.</p></div>`;
+    return;
+  }
+
+  const cols = [
+    { label: 'Saved',                  key: 'saved' },
+    { label: 'Growth',                 key: 'gr' },
+    { label: 'Chris Ret',              key: 'cRet' },
+    { label: 'Sophia Ret',             key: 'sRet' },
+    { label: 'Annual Exp',             key: 'totExp',   fmt: true },
+    { label: 'NW Today',               key: 'nwToday',  fmt: true },
+    { label: 'NW Chris Ret — A',       key: 'nwCRetA',  fmt: true },
+    { label: 'NW Chris Ret — B',       key: 'nwCRetB',  fmt: true },
+    { label: 'NW 10yr — A',            key: 'nw10A',    fmt: true },
+    { label: 'NW 10yr — B',            key: 'nw10B',    fmt: true },
+    { label: 'NW 20yr — A',            key: 'nw20A',    fmt: true },
+    { label: 'NW 20yr — B',            key: 'nw20B',    fmt: true },
+    { label: 'Surplus @ Ret — A',      key: 'surpCRetA',fmt: true, surp: true },
+    { label: 'Surplus @ Ret — B',      key: 'surpCRetB',fmt: true, surp: true },
+    { label: 'Cumulative 30yr — A',    key: 'cum30A',   fmt: true, surp: true },
+    { label: 'Cumulative 30yr — B',    key: 'cum30B',   fmt: true, surp: true },
+  ];
+
+  const thead = `<tr>
+    <th class="scenario-col">Scenario</th>
+    ${cols.map(c => `<th class="r">${c.label}</th>`).join('')}
+    <th></th>
+  </tr>`;
+
+  const tbody = savedScenarios.map((s, idx) => {
+    const cells = cols.map(c => {
+      const val = s[c.key];
+      if (val == null) return `<td class="r">—</td>`;
+      if (c.fmt) {
+        const cls = c.surp ? surpClass(val) : '';
+        return `<td class="r ${cls}">${gbp(val)}</td>`;
+      }
+      return `<td class="r">${val}</td>`;
+    }).join('');
+    return `<tr>
+      <td><strong>${s.name}</strong></td>
+      ${cells}
+      <td><button class="btn-del" onclick="deleteScenario(${idx})">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <h2 style="font-size:15px;color:var(--navy);">${savedScenarios.length} saved scenario${savedScenarios.length>1?'s':''}</h2>
+      <button class="btn-del" style="padding:6px 14px;" onclick="clearAllScenarios()">Clear all</button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="compare-tbl">
+          <thead>${thead}</thead>
+          <tbody>${tbody}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────
 // Tab switching
 // ─────────────────────────────────────────────────────────────
 function switchTab(name) {
-  const names = ['inputs', 'results', 'cashflow'];
+  const names = ['inputs', 'results', 'cashflow', 'compare'];
   document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', names[i] === name));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
 }
 
 // ─────────────────────────────────────────────────────────────
-// Init — calculate silently on load (results ready before first click)
+// Init
 // ─────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   initInputFormatting();
+  renderCompare();
   runCalc();
   switchTab('inputs');
 });
