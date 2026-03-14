@@ -381,8 +381,33 @@ const YEARS = Array.from({length: N}, (_, i) => START_YEAR + i);
 
 const charts = {};
 
-function v(id)    { return parseFloat(document.getElementById(id).value) || 0; }
+function v(id)    { return parseFloat(document.getElementById(id).value.replace(/,/g, '')) || 0; }
 function pct(id)  { return v(id) / 100; }
+
+function addCommas(n) {
+  if (n === '' || n == null) return '';
+  const num = parseFloat(String(n).replace(/,/g, ''));
+  if (isNaN(num)) return n;
+  // Preserve decimals for percentage fields
+  const parts = String(num).split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
+}
+
+function initInputFormatting() {
+  document.querySelectorAll('.input-row input').forEach(inp => {
+    // Format initial value
+    inp.value = addCommas(inp.value);
+    // Strip commas on focus so user can edit cleanly
+    inp.addEventListener('focus', function() {
+      this.value = this.value.replace(/,/g, '');
+    });
+    // Re-add commas on blur
+    inp.addEventListener('blur', function() {
+      this.value = addCommas(this.value);
+    });
+  });
+}
 
 function getGR() {
   const sel = document.querySelector('input[name="growth_sel"]:checked').value;
@@ -737,10 +762,9 @@ function switchTab(name) {
 // Init — calculate silently on load (results ready before first click)
 // ─────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  // Pre-populate results but stay on inputs tab
-  const originalSwitch = switchTab;
+  initInputFormatting();
   runCalc();
-  switchTab('inputs'); // stay on inputs after initial calc
+  switchTab('inputs');
 });
 </script>
 </body>
