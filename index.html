@@ -234,10 +234,14 @@
         <div class="card-body">
           <div class="input-row"><label>Total annual expenditure (£)</label><input type="text" inputmode="decimal" id="e_total" value="160,000"></div>
           <p class="note">Inflated at the rate set in Assumptions each year.</p>
-          <div class="person-hdr">Later-Life Reduced Spending</div>
+          <div class="person-hdr">Phase 2 — Mid-Life Spending Reduction</div>
+          <div class="input-row"><label>Reduce from Sophia age</label><input type="text" inputmode="decimal" id="e_mid_age" value="65"></div>
+          <div class="input-row"><label>Expenditure in today's money (£)</label><input type="text" inputmode="decimal" id="e_mid_amt" value="75,000"></div>
+
+          <div class="person-hdr">Phase 3 — Later-Life Spending Reduction</div>
           <div class="input-row"><label>Reduce from Sophia age</label><input type="text" inputmode="decimal" id="e_red_age" value="70"></div>
-          <div class="input-row"><label>Reduced expenditure in today's money (£)</label><input type="text" inputmode="decimal" id="e_red_amt" value="50,000"></div>
-          <p class="note">Inflation-adjusted from today, applied once Sophia reaches the specified age.</p>
+          <div class="input-row"><label>Expenditure in today's money (£)</label><input type="text" inputmode="decimal" id="e_red_amt" value="50,000"></div>
+          <p class="note">All phases inflation-adjusted from today's money.</p>
         </div>
       </div>
     </div>
@@ -434,6 +438,8 @@ function runCalc() {
     isaLimit: v('isa_limit'),
 
     totExp:   v('e_total'),
+    midAge:   v('e_mid_age'),
+    midExp:   v('e_mid_amt'),
     redAge:   v('e_red_age'),
     redExp:   v('e_red_amt'),
   };
@@ -480,7 +486,9 @@ function runCalc() {
     const sBaseTax   = calcIncomeTax(sBaseGross, inp.tPA, inp.tBRT, inp.tART) + calcNI(sEmp);
     const baseNetInc = (cBaseGross - cBaseTax) + (sBaseGross - sBaseTax) + inp.otherInc;
 
-    const baseExp = sAge >= inp.redAge ? inp.redExp : inp.totExp;
+    const baseExp = sAge >= inp.redAge ? inp.redExp
+                  : sAge >= inp.midAge ? inp.midExp
+                  : inp.totExp;
     const totExp = baseExp * Math.pow(1 + inp.inf, i);
     let shortfall = Math.max(0, totExp - baseNetInc);
 
