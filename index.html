@@ -276,7 +276,7 @@
         <thead><tr>
           <th>Year</th><th class="r">Chris Age</th><th class="r">Sophia Age</th>
           <th class="r">Property</th><th class="r">Pension</th><th class="r">Cash &amp; Investments</th><th class="r">Total Net Worth</th>
-          <th class="r">Net Income</th>
+          <th class="r">Net Income</th><th class="r">Pension Drawdown</th>
           <th class="r">Investment Growth</th>
           <th class="r">Tax (C+S)</th><th class="r">Expenditure</th>
           <th class="r">Surplus</th><th class="r">Cumulative</th>
@@ -394,7 +394,7 @@ function makeData() {
     prop:[], nw:[],
     cGross:[], sGross:[], cTax:[], sTax:[],
     cAnn:[], sAnn:[], cDD:[], sDD:[],
-    totInc:[], totExp:[], surp:[], cum:[], invInc:[]
+    totInc:[], penInc:[], totExp:[], surp:[], cum:[], invInc:[]
   };
 }
 
@@ -535,7 +535,8 @@ function runCalc() {
     B.cDD[i]=cDD; B.sDD[i]=sDD;
     B.cGross[i]=cBaseGross+cDD; B.sGross[i]=sBaseGross+sDD;
     B.cTax[i]=cTax; B.sTax[i]=sTax;
-    B.totInc[i]=totNetInc; B.totExp[i]=totExp;
+    const penNet = (cDD - (cTax - cBaseTax)) + (sDD - (sTax - sBaseTax));
+    B.penInc[i]=penNet; B.totInc[i]=totNetInc; B.totExp[i]=totExp;
     B.surp[i]=surp;
     B.cum[i] = i === 0 ? surp : B.cum[i-1] + surp;
 
@@ -666,7 +667,8 @@ function renderTables(B, inp) {
       <td class="r">${gbp(B.cPen[i] + B.sPen[i])}</td>
       <td class="r">${gbp(B.cISA[i] + B.sISA[i] + B.cInv[i] + B.sInv[i] + B.cCash[i] + B.sCash[i])}</td>
       <td class="r">${gbp(B.nw[i])}</td>
-      <td class="r">${gbp(B.totInc[i])}</td>
+      <td class="r">${gbp(B.totInc[i] - B.penInc[i])}</td>
+      <td class="r">${B.penInc[i] > 0 ? gbp(B.penInc[i]) : '—'}</td>
       <td class="r">${gbp(B.invInc[i])}</td>
       <td class="r neg">${gbp(tax)}</td>
       <td class="r">${gbp(B.totExp[i])}</td>
