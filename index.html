@@ -189,6 +189,10 @@
           <div class="input-row"><label>Chris state pension (£/yr)</label><input type="text" inputmode="decimal" id="state_c" value="11500"></div>
           <div class="input-row"><label>Sophia state pension (£/yr)</label><input type="text" inputmode="decimal" id="state_s" value="11500"></div>
 
+          <div class="person-hdr">Inflation</div>
+          <div class="input-row"><label>Expense inflation rate (%)</label><input type="text" inputmode="decimal" id="r_inf" value="3"></div>
+          <p class="note">Applied annually to all expenditure items.</p>
+
           <div class="person-hdr">UK Tax Thresholds (2024/25)</div>
           <div class="input-row"><label>Personal allowance (£)</label><input type="text" inputmode="decimal" id="t_pa"  value="12570"></div>
           <div class="input-row"><label>Basic rate threshold (£)</label><input type="text" inputmode="decimal" id="t_brt" value="50270"></div>
@@ -450,6 +454,7 @@ function runCalc() {
     tPA:  v('t_pa'),
     tBRT: v('t_brt'),
     tART: v('t_art'),
+    inf:  pct('r_inf'),
 
     totExp:
       v('e_housing') + v('e_maint')  + v('e_util')  + v('e_groc')  +
@@ -529,7 +534,7 @@ function runCalc() {
     A.cGross[i] = cGrossA; A.sGross[i] = sGrossA;
     A.cTax[i]   = cTaxA;   A.sTax[i]   = sTaxA;
     A.totInc[i] = (cGrossA - cTaxA) + (sGrossA - sTaxA) + inp.otherInc;
-    A.totExp[i] = inp.totExp;
+    A.totExp[i] = inp.totExp * Math.pow(1 + inp.inf, i);
     A.surp[i]   = A.totInc[i] - A.totExp[i];
     A.cum[i]    = i === 0 ? A.surp[0] : A.cum[i-1] + A.surp[i];
 
@@ -557,7 +562,7 @@ function runCalc() {
     B.cGross[i] = cGrossB; B.sGross[i] = sGrossB;
     B.cTax[i]   = cTaxB;   B.sTax[i]   = sTaxB;
     B.totInc[i] = (cGrossB - cTaxB) + (sGrossB - sTaxB) + inp.otherInc;
-    B.totExp[i] = inp.totExp;
+    B.totExp[i] = inp.totExp * Math.pow(1 + inp.inf, i);
     B.surp[i]   = B.totInc[i] - B.totExp[i];
     B.cum[i]    = i === 0 ? B.surp[0] : B.cum[i-1] + B.surp[i];
   }
