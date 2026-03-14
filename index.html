@@ -271,7 +271,8 @@
       <table>
         <thead><tr>
           <th>Year</th><th class="r">Chris Age</th><th class="r">Sophia Age</th>
-          <th class="r">Net Worth</th><th class="r">Net Income</th>
+          <th class="r">Property</th><th class="r">Pension</th><th class="r">Cash &amp; Investments</th><th class="r">Total Net Worth</th>
+          <th class="r">Net Income</th>
           <th class="r">Investment Growth</th>
           <th class="r">Tax (C+S)</th><th class="r">Expenditure</th>
           <th class="r">Surplus</th><th class="r">Cumulative</th>
@@ -659,6 +660,9 @@ function renderTables(B, inp) {
       <td>${yr}</td>
       <td class="r">${B.cAge[i]}</td>
       <td class="r">${B.sAge[i]}</td>
+      <td class="r">${gbp(B.prop[i])}</td>
+      <td class="r">${gbp(B.cPen[i] + B.sPen[i])}</td>
+      <td class="r">${gbp(B.cISA[i] + B.sISA[i] + B.cInv[i] + B.sInv[i] + B.cCash[i] + B.sCash[i])}</td>
       <td class="r">${gbp(B.nw[i])}</td>
       <td class="r">${gbp(B.totInc[i])}</td>
       <td class="r">${gbp(B.invInc[i])}</td>
