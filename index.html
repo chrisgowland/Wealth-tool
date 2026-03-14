@@ -185,6 +185,10 @@
           <div class="input-row"><label>Chris state pension (£/yr)</label><input type="text" inputmode="decimal" id="state_c" value="11500"></div>
           <div class="input-row"><label>Sophia state pension (£/yr)</label><input type="text" inputmode="decimal" id="state_s" value="11500"></div>
 
+          <div class="person-hdr">Surplus Allocation</div>
+          <div class="input-row"><label>ISA allowance per person (£/yr)</label><input type="text" inputmode="decimal" id="isa_limit" value="20,000"></div>
+          <p class="note">Surplus goes into ISAs (50:50) up to the annual allowance, then into non-ISA investments (50:50).</p>
+
           <div class="person-hdr">Inflation</div>
           <div class="input-row"><label>Expense inflation rate (%)</label><input type="text" inputmode="decimal" id="r_inf" value="3"></div>
           <p class="note">Applied annually to all expenditure items.</p>
@@ -410,7 +414,8 @@ function runCalc() {
     tPA:  v('t_pa'),
     tBRT: v('t_brt'),
     tART: v('t_art'),
-    inf:  pct('r_inf'),
+    inf:      pct('r_inf'),
+    isaLimit: v('isa_limit'),
 
     totExp: v('e_total'),
   };
@@ -509,8 +514,15 @@ function runCalc() {
       drawDown(cISA  + sISA,  'isa',  'isa');
     }
 
-    // ── 6. Surplus: add to cash savings ───────────────────────────────────
-    if (surp > 0) { cCash += surp * 0.5; sCash += surp * 0.5; }
+    // ── 6. Surplus: ISA first (50:50), remainder into investments (50:50) ──
+    if (surp > 0) {
+      const isaRoom = inp.isaLimit * 2;
+      const toISA = Math.min(surp, isaRoom);
+      cISA += toISA * 0.5;
+      sISA += toISA * 0.5;
+      const rem = surp - toISA;
+      if (rem > 0) { cInv += rem * 0.5; sInv += rem * 0.5; }
+    }
 
     // ── 7. Store ──────────────────────────────────────────────────────────
     B.cPen[i]=cPen; B.cISA[i]=cISA; B.cInv[i]=cInv; B.cCash[i]=cCash;
