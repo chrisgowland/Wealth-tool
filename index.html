@@ -824,6 +824,20 @@ function switchTab(name) {
 // Init
 // ─────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
+  // ── Password gate ──
+  const PASS = 'sophiaBetty48';
+  const SESSION_KEY = 'wp_auth';
+  if (sessionStorage.getItem(SESSION_KEY) !== '1') {
+    document.body.style.display = 'none';
+    const entered = prompt('Enter password to access this page:');
+    if (entered === PASS) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      document.body.style.display = '';
+    } else {
+      document.body.innerHTML = '<p style="font-family:sans-serif;padding:2rem;color:#b91c1c;">Incorrect password.</p>';
+      return;
+    }
+  }
   initInputFormatting();
   renderCompare();
   runCalc();
