@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wealth Plan — Chris &amp; Sophia</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --navy:   #1e4e79;
+      --accent: #2e75b6;
+      --purple: #6b46c1;
+      --green:  #1a5e2a;
+      --red:    #b91c1c;
+      --subhdr: #d6e4f0;
+      --gray:   #f2f2f2;
+      --border: #d0d0d0;
+      --muted:  #666;
+      --blue-in:#1d4ed8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; background: #f5f7fa; color: #1a1a1a; }
+
+    /* ── Header ── */
+    header {
+      background: var(--navy); color: #fff;
+      padding: 14px 24px; position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,.25);
+    }
+    header h1 { font-size: 18px; font-weight: 700; }
+    header p  { font-size: 11px; opacity: .75; margin-top: 2px; }
+    .btn-calc {
+      background: var(--accent); color: #fff; border: none;
+      padding: 9px 22px; border-radius: 5px; font-size: 13px;
+      font-weight: 600; cursor: pointer; transition: background .15s;
+    }
+    .btn-calc:hover { background: #1a5e2a; }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex; gap: 2px; background: var(--navy);
+      padding: 0 24px;
+    }
+    .tab {
+      padding: 10px 20px; cursor: pointer; font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,.65); border-bottom: 3px solid transparent;
+      transition: all .15s;
+    }
+    .tab:hover  { color: #fff; }
+    .tab.active { color: #fff; border-bottom-color: #fff; }
+    .tab-panel  { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Layout ── */
+    main { max-width: 1440px; margin: 0 auto; padding: 20px 24px 40px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .four-col { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+    @media(max-width:900px) {
+      .two-col, .four-col { grid-template-columns: 1fr; }
+    }
+
+    /* ── Cards ── */
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 7px; margin-bottom: 16px; overflow: hidden; }
+    .card-hdr {
+      background: var(--navy); color: #fff;
+      padding: 9px 14px; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .6px;
+    }
+    .card-hdr.purple { background: var(--purple); }
+    .card-hdr.green  { background: var(--green); }
+    .card-body { padding: 14px; }
+
+    /* ── Inputs ── */
+    .person-hdr {
+      background: var(--subhdr); color: var(--navy);
+      padding: 5px 10px; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .5px;
+      border-radius: 4px; margin: 10px 0 8px;
+    }
+    .person-hdr:first-child { margin-top: 0; }
+    .input-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 4px 0; border-bottom: 1px solid #f0f0f0;
+    }
+    .input-row:last-child { border-bottom: none; }
+    .input-row label { font-size: 13px; flex: 1; padding-right: 8px; }
+    .input-row input {
+      width: 115px; text-align: right; border: 1px solid var(--border);
+      border-radius: 4px; padding: 4px 7px; font-size: 13px;
+      color: var(--blue-in); font-weight: 600;
+    }
+    .input-row input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(46,117,182,.2); }
+    .radio-group { display: flex; gap: 14px; padding: 6px 0 4px; }
+    .radio-group label { display: flex; align-items: center; gap: 4px; font-size: 13px; cursor: pointer; }
+    .note { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 6px; }
+
+    /* ── Metric cards ── */
+    .metric-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 7px;
+      padding: 14px 16px; margin-bottom: 0;
+    }
+    .metric-card h3 { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin-bottom: 6px; }
+    .metric-val { font-size: 20px; font-weight: 700; color: var(--navy); }
+    .metric-val.sm { font-size: 16px; }
+
+    /* ── Charts ── */
+    .chart-card { background: #fff; border: 1px solid var(--border); border-radius: 7px; padding: 16px; margin-bottom: 16px; }
+    .chart-card h3 { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 12px; }
+    .chart-wrap { position: relative; height: 280px; }
+
+    /* ── Tables ── */
+    .tbl-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { background: var(--navy); color: #fff; padding: 8px 10px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    th.purple-bg { background: var(--purple); }
+    th.green-bg  { background: var(--green); }
+    td { padding: 6px 10px; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+    tr:nth-child(even) td { background: #fafafa; }
+    tr:hover td { background: var(--subhdr); }
+    .r { text-align: right; }
+    .pos { color: var(--green); font-weight: 600; }
+    .neg { color: var(--red);   font-weight: 600; }
+    .bold td { font-weight: 700; background: var(--gray) !important; }
+
+    /* ── Misc ── */
+    .section-gap { margin-bottom: 20px; }
+    .center-btn { text-align: center; padding: 12px 0 28px; }
+    .center-btn .btn-calc { font-size: 15px; padding: 12px 44px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Wealth Plan — Chris &amp; Sophia</h1>
+    <p>30-year model · Scenario A: Annuity · Scenario B: Drawdown</p>
+  </div>
+  <button class="btn-calc" onclick="runCalc()">Calculate ↻</button>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('inputs')">Inputs</div>
+  <div class="tab" onclick="switchTab('results')">Results &amp; Charts</div>
+  <div class="tab" onclick="switchTab('cashflow')">30-Year Detail</div>
+</div>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════ INPUTS ═══ -->
+<div id="tab-inputs" class="tab-panel active">
+  <div class="two-col">
+
+    <!-- LEFT: Assets + Assumptions -->
+    <div>
+      <div class="card">
+        <div class="card-hdr">Asset Position</div>
+        <div class="card-body">
+
+          <div class="person-hdr">Chris</div>
+          <div class="input-row"><label>Current age</label><input type="number" id="c_age"  value="48"></div>
+          <div class="input-row"><label>Retirement / stop-work age</label><input type="number" id="c_ret"  value="58"></div>
+          <div class="input-row"><label>Pension drawdown age</label><input type="number" id="c_dd"   value="57"></div>
+          <div class="input-row"><label>Pension / SIPP (£)</label><input type="number" id="c_pen"  value="350000"></div>
+          <div class="input-row"><label>Stocks &amp; Shares ISA (£)</label><input type="number" id="c_isa"  value="60000"></div>
+          <div class="input-row"><label>Non-ISA investments (£)</label><input type="number" id="c_inv"  value="0"></div>
+          <div class="input-row"><label>Cash savings (£)</label><input type="number" id="c_cash" value="20000"></div>
+          <div class="input-row"><label>Cash interest rate (%)</label><input type="number" id="c_cashr" value="4" step="0.1"></div>
+
+          <div class="person-hdr">Sophia</div>
+          <div class="input-row"><label>Current age</label><input type="number" id="s_age"  value="38"></div>
+          <div class="input-row"><label>Retirement / stop-work age</label><input type="number" id="s_ret"  value="48"></div>
+          <div class="input-row"><label>Pension drawdown age</label><input type="number" id="s_dd"   value="57"></div>
+          <div class="input-row"><label>Pension / SIPP (£)</label><input type="number" id="s_pen"  value="80000"></div>
+          <div class="input-row"><label>Stocks &amp; Shares ISA (£)</label><input type="number" id="s_isa"  value="20000"></div>
+          <div class="input-row"><label>Non-ISA investments (£)</label><input type="number" id="s_inv"  value="0"></div>
+          <div class="input-row"><label>Cash savings (£)</label><input type="number" id="s_cash" value="10000"></div>
+          <div class="input-row"><label>Cash interest rate (%)</label><input type="number" id="s_cashr" value="4" step="0.1"></div>
+
+          <div class="person-hdr">Shared Property</div>
+          <div class="input-row"><label>Property equity (£)</label><input type="number" id="prop"  value="500000"></div>
+          <div class="input-row"><label>Annual appreciation (%)</label><input type="number" id="propr" value="3" step="0.1"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hdr">Assumptions</div>
+        <div class="card-body">
+          <div class="person-hdr">Portfolio Growth Rate</div>
+          <div class="input-row"><label>Conservative (%)</label><input type="number" id="r_con" value="4" step="0.1"></div>
+          <div class="input-row"><label>Moderate (%)</label><input type="number" id="r_mod" value="6" step="0.1"></div>
+          <div class="input-row"><label>Optimistic (%)</label><input type="number" id="r_opt" value="8" step="0.1"></div>
+          <div class="radio-group">
+            <label><input type="radio" name="growth_sel" value="con"> Conservative</label>
+            <label><input type="radio" name="growth_sel" value="mod" checked> Moderate</label>
+            <label><input type="radio" name="growth_sel" value="opt"> Optimistic</label>
+          </div>
+
+          <div class="person-hdr">Annuity Rates (Scenario A)</div>
+          <div class="input-row"><label>Chris annuity rate (%)</label><input type="number" id="c_ann" value="5.5" step="0.1"></div>
+          <div class="input-row"><label>Sophia annuity rate (%)</label><input type="number" id="s_ann" value="5.0" step="0.1"></div>
+
+          <div class="person-hdr">State Pensions (from age 67)</div>
+          <div class="input-row"><label>Chris state pension (£/yr)</label><input type="number" id="state_c" value="11500"></div>
+          <div class="input-row"><label>Sophia state pension (£/yr)</label><input type="number" id="state_s" value="11500"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Income + Expenditure -->
+    <div>
+      <div class="card">
+        <div class="card-hdr">Income (Working Years)</div>
+        <div class="card-body">
+          <div class="person-hdr">Chris</div>
+          <div class="input-row"><label>Employment / consultancy (£/yr gross)</label><input type="number" id="c_emp" value="180000"></div>
+          <div class="input-row"><label>Business income (£/yr)</label><input type="number" id="c_biz" value="0"></div>
+
+          <div class="person-hdr">Sophia</div>
+          <div class="input-row"><label>Employment / consultancy (£/yr gross)</label><input type="number" id="s_emp" value="40000"></div>
+          <div class="input-row"><label>Other income (£/yr)</label><input type="number" id="other_inc" value="0"></div>
+
+          <p class="note">Employment income stops at each person's retirement age. Drawdown / annuity income begins at pension drawdown age.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hdr">Annual Expenditure</div>
+        <div class="card-body">
+          <div class="input-row"><label>Housing — mortgage / rent (£)</label><input type="number" id="e_housing" value="24000"></div>
+          <div class="input-row"><label>Housing — maintenance &amp; service (£)</label><input type="number" id="e_maint"   value="3000"></div>
+          <div class="input-row"><label>Utilities &amp; broadband (£)</label><input type="number" id="e_util"    value="3600"></div>
+          <div class="input-row"><label>Groceries &amp; household (£)</label><input type="number" id="e_groc"    value="9600"></div>
+          <div class="input-row"><label>Childcare (£)</label><input type="number" id="e_child"   value="12000"></div>
+          <div class="input-row"><label>Transport — car &amp; fuel (£)</label><input type="number" id="e_trans"   value="6000"></div>
+          <div class="input-row"><label>Holidays &amp; travel (£)</label><input type="number" id="e_hols"    value="8000"></div>
+          <div class="input-row"><label>Clothing &amp; personal (£)</label><input type="number" id="e_cloth"   value="4000"></div>
+          <div class="input-row"><label>Health &amp; fitness (£)</label><input type="number" id="e_health"  value="2400"></div>
+          <div class="input-row"><label>Eating out &amp; socialising (£)</label><input type="number" id="e_eat"     value="5000"></div>
+          <div class="input-row"><label>Insurance (life, home, health) (£)</label><input type="number" id="e_ins"     value="3600"></div>
+          <div class="input-row"><label>Pension contributions (£)</label><input type="number" id="e_pen"     value="24000"></div>
+          <div class="input-row"><label>ISA contributions (£)</label><input type="number" id="e_isa"     value="18000"></div>
+          <div class="input-row"><label>Other savings / investments (£)</label><input type="number" id="e_osav"    value="0"></div>
+          <div class="input-row"><label>One-off / irregular (£)</label><input type="number" id="e_oneoff"  value="5000"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="center-btn">
+    <button class="btn-calc" onclick="runCalc()">Calculate →</button>
+  </div>
+</div><!-- /tab-inputs -->
+
+
+<!-- ══════════════════════════════════════════════ RESULTS ═══ -->
+<div id="tab-results" class="tab-panel">
+
+  <!-- Key metrics strip -->
+  <div class="four-col section-gap" id="metrics-grid"></div>
+
+  <!-- Charts row 1: Net Worth + Surplus -->
+  <div class="two-col section-gap">
+    <div class="chart-card">
+      <h3>Net Worth Over 30 Years</h3>
+      <div class="chart-wrap"><canvas id="chart-nw"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Annual Surplus / (Deficit)</h3>
+      <div class="chart-wrap"><canvas id="chart-surp"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Charts row 2: Income vs Exp -->
+  <div class="two-col section-gap">
+    <div class="chart-card">
+      <h3>Income vs Expenditure — Scenario A (Annuity)</h3>
+      <div class="chart-wrap"><canvas id="chart-inc-a"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Income vs Expenditure — Scenario B (Drawdown)</h3>
+      <div class="chart-wrap"><canvas id="chart-inc-b"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Charts row 3: Asset breakdown -->
+  <div class="two-col section-gap">
+    <div class="chart-card">
+      <h3>Asset Breakdown — Scenario A</h3>
+      <div class="chart-wrap"><canvas id="chart-assets-a"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Asset Breakdown — Scenario B</h3>
+      <div class="chart-wrap"><canvas id="chart-assets-b"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Milestone table -->
+  <div class="card">
+    <div class="card-hdr">Milestone Summary</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Milestone</th>
+            <th class="r">Year</th>
+            <th class="r purple-bg">Net Worth — Scen A</th>
+            <th class="r green-bg">Net Worth — Scen B</th>
+            <th class="r purple-bg">Annual Surplus — Scen A</th>
+            <th class="r green-bg">Annual Surplus — Scen B</th>
+            <th class="r purple-bg">Cumulative — Scen A</th>
+            <th class="r green-bg">Cumulative — Scen B</th>
+          </tr>
+        </thead>
+        <tbody id="milestone-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /tab-results -->
+
+
+<!-- ═════════════════════════════════════════ 30-YEAR DETAIL ═══ -->
+<div id="tab-cashflow" class="tab-panel">
+  <div class="two-col">
+
+    <div class="card">
+      <div class="card-hdr purple">Scenario A — Annuity</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th class="r">Chris</th>
+              <th class="r">Sophia</th>
+              <th class="r">Net Worth</th>
+              <th class="r">Income</th>
+              <th class="r">Expenditure</th>
+              <th class="r">Surplus</th>
+              <th class="r">Cumulative</th>
+            </tr>
+          </thead>
+          <tbody id="body-a"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr green">Scenario B — Drawdown</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th class="r">Chris</th>
+              <th class="r">Sophia</th>
+              <th class="r">Net Worth</th>
+              <th class="r">Income</th>
+              <th class="r">Expenditure</th>
+              <th class="r">Surplus</th>
+              <th class="r">Cumulative</th>
+            </tr>
+          </thead>
+          <tbody id="body-b"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /tab-cashflow -->
+
+</main>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// Utilities
+// ─────────────────────────────────────────────────────────────
+const N = 30;
+const START_YEAR = 2026;
+const YEARS = Array.from({length: N}, (_, i) => START_YEAR + i);
+
+const charts = {};
+
+function v(id)    { return parseFloat(document.getElementById(id).value) || 0; }
+function pct(id)  { return v(id) / 100; }
+
+function getGR() {
+  const sel = document.querySelector('input[name="growth_sel"]:checked').value;
+  return sel === 'con' ? pct('r_con') : sel === 'opt' ? pct('r_opt') : pct('r_mod');
+}
+
+function gbp(n, compact = false) {
+  if (n == null || isNaN(n)) return '—';
+  const abs = Math.abs(Math.round(n));
+  const str = compact
+    ? (abs >= 1e6 ? '£' + (abs/1e6).toFixed(1) + 'm' : '£' + (abs/1e3).toFixed(0) + 'k')
+    : '£' + abs.toLocaleString('en-GB');
+  return n < 0 ? '(' + str + ')' : str;
+}
+
+function surpClass(n) { return n >= 0 ? 'pos' : 'neg'; }
+
+function destroyChart(id) {
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+function makeData() {
+  return {
+    cAge:[], sAge:[],
+    cPen:[], cISA:[], cInv:[], cCash:[],
+    sPen:[], sISA:[], sInv:[], sCash:[],
+    prop:[], nw:[],
+    cEmp:[], cBiz:[], sEmp:[],
+    cAnn:[], sAnn:[], cDD:[], sDD:[],
+    stateC:[], stateS:[], otherInc:[],
+    totInc:[], totExp:[], surp:[], cum:[]
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// Main calculation
+// ─────────────────────────────────────────────────────────────
+function runCalc() {
+  const inp = {
+    cAge:  v('c_age'),  cRet: v('c_ret'),  cDD:  v('c_dd'),
+    cPen:  v('c_pen'),  cISA: v('c_isa'),  cInv: v('c_inv'),
+    cCash: v('c_cash'), cCashR: pct('c_cashr'), cAnn: pct('c_ann'),
+    cEmp:  v('c_emp'),  cBiz: v('c_biz'),
+
+    sAge:  v('s_age'),  sRet: v('s_ret'),  sDD:  v('s_dd'),
+    sPen:  v('s_pen'),  sISA: v('s_isa'),  sInv: v('s_inv'),
+    sCash: v('s_cash'), sCashR: pct('s_cashr'), sAnn: pct('s_ann'),
+    sEmp:  v('s_emp'),  otherInc: v('other_inc'),
+
+    prop: v('prop'), propR: pct('propr'),
+    stateC: v('state_c'), stateS: v('state_s'),
+    gr: getGR(),
+
+    totExp:
+      v('e_housing') + v('e_maint')  + v('e_util')   + v('e_groc')  +
+      v('e_child')   + v('e_trans')  + v('e_hols')   + v('e_cloth') +
+      v('e_health')  + v('e_eat')    + v('e_ins')    + v('e_pen')   +
+      v('e_isa')     + v('e_osav')   + v('e_oneoff'),
+  };
+
+  const ddEach = inp.totExp / 2; // per-person drawdown in Scenario B
+
+  const A = makeData();
+  const B = makeData();
+
+  for (let i = 0; i < N; i++) {
+    const cAge = inp.cAge + i;
+    const sAge = inp.sAge + i;
+    A.cAge[i] = cAge; A.sAge[i] = sAge;
+    B.cAge[i] = cAge; B.sAge[i] = sAge;
+
+    // ── Scenario A assets ──────────────────────────────────────
+    if (i === 0) {
+      A.cPen[0]  = inp.cPen;  A.cISA[0] = inp.cISA; A.cInv[0] = inp.cInv; A.cCash[0] = inp.cCash;
+      A.sPen[0]  = inp.sPen;  A.sISA[0] = inp.sISA; A.sInv[0] = inp.sInv; A.sCash[0] = inp.sCash;
+      A.prop[0]  = inp.prop;
+    } else {
+      A.cPen[i]  = cAge >= inp.cDD ? 0 : A.cPen[i-1]  * (1 + inp.gr);
+      A.cISA[i]  = A.cISA[i-1]  * (1 + inp.gr);
+      A.cInv[i]  = A.cInv[i-1]  * (1 + inp.gr);
+      A.cCash[i] = A.cCash[i-1] * (1 + inp.cCashR);
+      A.sPen[i]  = sAge >= inp.sDD ? 0 : A.sPen[i-1]  * (1 + inp.gr);
+      A.sISA[i]  = A.sISA[i-1]  * (1 + inp.gr);
+      A.sInv[i]  = A.sInv[i-1]  * (1 + inp.gr);
+      A.sCash[i] = A.sCash[i-1] * (1 + inp.sCashR);
+      A.prop[i]  = A.prop[i-1]  * (1 + inp.propR);
+    }
+    A.nw[i] = A.cPen[i]+A.cISA[i]+A.cInv[i]+A.cCash[i]+A.sPen[i]+A.sISA[i]+A.sInv[i]+A.sCash[i]+A.prop[i];
+
+    // ── Scenario A income ──────────────────────────────────────
+    A.cEmp[i]     = cAge < inp.cRet ? inp.cEmp  : 0;
+    A.cBiz[i]     = cAge < inp.cRet ? inp.cBiz  : 0;
+    A.sEmp[i]     = sAge < inp.sRet ? inp.sEmp  : 0;
+    A.stateC[i]   = cAge >= 67 ? inp.stateC : 0;
+    A.stateS[i]   = sAge >= 67 ? inp.stateS : 0;
+    A.otherInc[i] = inp.otherInc;
+
+    // Annuity: computed once at drawdown year, then fixed forever
+    if (cAge < inp.cDD) {
+      A.cAnn[i] = 0;
+    } else if (cAge === inp.cDD) {
+      const potGrown = i === 0 ? inp.cPen : A.cPen[i-1] * (1 + inp.gr);
+      A.cAnn[i] = potGrown * inp.cAnn;
+    } else {
+      A.cAnn[i] = A.cAnn[i-1];
+    }
+    if (sAge < inp.sDD) {
+      A.sAnn[i] = 0;
+    } else if (sAge === inp.sDD) {
+      const potGrown = i === 0 ? inp.sPen : A.sPen[i-1] * (1 + inp.gr);
+      A.sAnn[i] = potGrown * inp.sAnn;
+    } else {
+      A.sAnn[i] = A.sAnn[i-1];
+    }
+
+    A.totInc[i] = A.cEmp[i]+A.cBiz[i]+A.sEmp[i]+A.cAnn[i]+A.sAnn[i]+A.stateC[i]+A.stateS[i]+A.otherInc[i];
+    A.totExp[i] = inp.totExp;
+    A.surp[i]   = A.totInc[i] - A.totExp[i];
+    A.cum[i]    = i === 0 ? A.surp[0] : A.cum[i-1] + A.surp[i];
+
+    // ── Scenario B assets ──────────────────────────────────────
+    if (i === 0) {
+      B.cPen[0]  = inp.cPen;  B.cISA[0] = inp.cISA; B.cInv[0] = inp.cInv; B.cCash[0] = inp.cCash;
+      B.sPen[0]  = inp.sPen;  B.sISA[0] = inp.sISA; B.sInv[0] = inp.sInv; B.sCash[0] = inp.sCash;
+      B.prop[0]  = inp.prop;
+    } else {
+      const cGrown = B.cPen[i-1] * (1 + inp.gr);
+      const sGrown = B.sPen[i-1] * (1 + inp.gr);
+      B.cPen[i]  = cAge >= inp.cDD ? Math.max(0, cGrown - ddEach) : cGrown;
+      B.cISA[i]  = B.cISA[i-1]  * (1 + inp.gr);
+      B.cInv[i]  = B.cInv[i-1]  * (1 + inp.gr);
+      B.cCash[i] = B.cCash[i-1] * (1 + inp.cCashR);
+      B.sPen[i]  = sAge >= inp.sDD ? Math.max(0, sGrown - ddEach) : sGrown;
+      B.sISA[i]  = B.sISA[i-1]  * (1 + inp.gr);
+      B.sInv[i]  = B.sInv[i-1]  * (1 + inp.gr);
+      B.sCash[i] = B.sCash[i-1] * (1 + inp.sCashR);
+      B.prop[i]  = B.prop[i-1]  * (1 + inp.propR);
+    }
+    B.nw[i] = B.cPen[i]+B.cISA[i]+B.cInv[i]+B.cCash[i]+B.sPen[i]+B.sISA[i]+B.sInv[i]+B.sCash[i]+B.prop[i];
+
+    // ── Scenario B income ──────────────────────────────────────
+    B.cEmp[i]     = cAge < inp.cRet ? inp.cEmp  : 0;
+    B.cBiz[i]     = cAge < inp.cRet ? inp.cBiz  : 0;
+    B.sEmp[i]     = sAge < inp.sRet ? inp.sEmp  : 0;
+    B.stateC[i]   = cAge >= 67 ? inp.stateC : 0;
+    B.stateS[i]   = sAge >= 67 ? inp.stateS : 0;
+    B.otherInc[i] = inp.otherInc;
+
+    if (cAge >= inp.cDD) {
+      const available = i === 0 ? inp.cPen : B.cPen[i-1] * (1 + inp.gr);
+      B.cDD[i] = Math.min(ddEach, available);
+    } else { B.cDD[i] = 0; }
+
+    if (sAge >= inp.sDD) {
+      const available = i === 0 ? inp.sPen : B.sPen[i-1] * (1 + inp.gr);
+      B.sDD[i] = Math.min(ddEach, available);
+    } else { B.sDD[i] = 0; }
+
+    B.totInc[i] = B.cEmp[i]+B.cBiz[i]+B.sEmp[i]+B.cDD[i]+B.sDD[i]+B.stateC[i]+B.stateS[i]+B.otherInc[i];
+    B.totExp[i] = inp.totExp;
+    B.surp[i]   = B.totInc[i] - B.totExp[i];
+    B.cum[i]    = i === 0 ? B.surp[0] : B.cum[i-1] + B.surp[i];
+  }
+
+  renderMetrics(A, B, inp);
+  renderCharts(A, B);
+  renderMilestones(A, B, inp);
+  renderTables(A, B);
+  switchTab('results');
+}
+
+// ─────────────────────────────────────────────────────────────
+// Metrics
+// ─────────────────────────────────────────────────────────────
+function renderMetrics(A, B, inp) {
+  const ri = inp.cRet - inp.cAge;
+  const vals = [
+    { label: 'Net Worth Today',             val: gbp(A.nw[0]) },
+    { label: `NW at Chris Ret (Scen A)`,    val: inRange(ri) ? gbp(A.nw[ri]) : '—' },
+    { label: `NW at Chris Ret (Scen B)`,    val: inRange(ri) ? gbp(B.nw[ri]) : '—' },
+    { label: 'Annual Expenditure',           val: gbp(inp.totExp) },
+    { label: 'Portfolio needed (4% rule)',   val: gbp(inp.totExp / 0.04) },
+    { label: 'NW in 10 years (Scen A)',      val: gbp(A.nw[9]) },
+    { label: 'NW in 20 years (Scen A)',      val: gbp(A.nw[19]) },
+    { label: 'NW in 30 years (Scen A)',      val: gbp(A.nw[29]) },
+  ];
+  document.getElementById('metrics-grid').innerHTML = vals.map(m =>
+    `<div class="metric-card"><h3>${m.label}</h3><div class="metric-val sm">${m.val}</div></div>`
+  ).join('');
+}
+
+function inRange(i) { return i >= 0 && i < N; }
+
+// ─────────────────────────────────────────────────────────────
+// Charts
+// ─────────────────────────────────────────────────────────────
+const PURPLE = 'rgba(107,70,193,1)';
+const PURPLE_L = 'rgba(107,70,193,0.12)';
+const GREEN  = 'rgba(26,94,42,1)';
+const GREEN_L = 'rgba(26,94,42,0.12)';
+const BLUE   = 'rgba(46,117,182,1)';
+const AMBER  = 'rgba(212,160,23,1)';
+
+function yAxis() {
+  return {
+    ticks: {
+      font: { size: 10 },
+      callback: v => {
+        const a = Math.abs(v);
+        if (a >= 1e6) return (v < 0 ? '-' : '') + '£' + (a/1e6).toFixed(1) + 'm';
+        if (a >= 1e3) return (v < 0 ? '-' : '') + '£' + (a/1e3).toFixed(0) + 'k';
+        return '£' + v;
+      }
+    }
+  };
+}
+
+function commonOpts(stacked = false) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12 } } },
+    scales: {
+      x: { ticks: { font: { size: 10 }, maxRotation: 45 }, stacked },
+      y: { ...yAxis(), stacked }
+    }
+  };
+}
+
+function renderCharts(A, B) {
+  const lbls = YEARS.map(String);
+
+  // 1. Net Worth
+  destroyChart('nw');
+  charts['nw'] = new Chart(document.getElementById('chart-nw'), {
+    type: 'line',
+    data: { labels: lbls, datasets: [
+      { label: 'Scen A — Annuity',  data: A.nw, borderColor: PURPLE, backgroundColor: PURPLE_L, fill: false, tension: 0.3, pointRadius: 2 },
+      { label: 'Scen B — Drawdown', data: B.nw, borderColor: GREEN,  backgroundColor: GREEN_L,  fill: false, tension: 0.3, pointRadius: 2 },
+    ]},
+    options: commonOpts()
+  });
+
+  // 2. Annual Surplus
+  destroyChart('surp');
+  charts['surp'] = new Chart(document.getElementById('chart-surp'), {
+    type: 'bar',
+    data: { labels: lbls, datasets: [
+      { label: 'Scen A', data: A.surp, backgroundColor: A.surp.map(v => v >= 0 ? 'rgba(107,70,193,0.75)' : 'rgba(185,28,28,0.65)'), borderRadius: 2 },
+      { label: 'Scen B', data: B.surp, backgroundColor: B.surp.map(v => v >= 0 ? 'rgba(26,94,42,0.75)'  : 'rgba(185,28,28,0.65)'), borderRadius: 2 },
+    ]},
+    options: commonOpts()
+  });
+
+  // 3 & 4. Income vs Expenditure
+  [['inc-a', A], ['inc-b', B]].forEach(([id, d]) => {
+    destroyChart(id);
+    charts[id] = new Chart(document.getElementById('chart-' + id), {
+      type: 'line',
+      data: { labels: lbls, datasets: [
+        { label: 'Total Income',      data: d.totInc, borderColor: BLUE,  fill: false, tension: 0.3, pointRadius: 2 },
+        { label: 'Total Expenditure', data: d.totExp, borderColor: AMBER, fill: false, tension: 0.3, pointRadius: 2, borderDash: [6,3] },
+      ]},
+      options: commonOpts()
+    });
+  });
+
+  // 5 & 6. Asset Breakdown (stacked area)
+  function assetDatasets(d) {
+    return [
+      { label: 'Chris Pension',  data: d.cPen, borderColor: PURPLE, backgroundColor: 'rgba(107,70,193,0.25)', fill: true, tension: 0.3, pointRadius: 0 },
+      { label: 'Chris ISA',      data: d.cISA, borderColor: BLUE,   backgroundColor: 'rgba(46,117,182,0.25)',  fill: true, tension: 0.3, pointRadius: 0 },
+      { label: 'Sophia Pension', data: d.sPen, borderColor: AMBER,  backgroundColor: 'rgba(212,160,23,0.25)',  fill: true, tension: 0.3, pointRadius: 0 },
+      { label: 'Property',       data: d.prop, borderColor: GREEN,  backgroundColor: 'rgba(26,94,42,0.25)',    fill: true, tension: 0.3, pointRadius: 0 },
+    ];
+  }
+  ['assets-a', 'assets-b'].forEach((id, si) => {
+    destroyChart(id);
+    charts[id] = new Chart(document.getElementById('chart-' + id), {
+      type: 'line',
+      data: { labels: lbls, datasets: assetDatasets(si === 0 ? A : B) },
+      options: commonOpts()
+    });
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// Milestone table
+// ─────────────────────────────────────────────────────────────
+function renderMilestones(A, B, inp) {
+  const ms = [
+    { label: `Chris stops work (age ${inp.cRet})`,       i: inp.cRet - inp.cAge },
+    { label: `Sophia stops work (age ${inp.sRet})`,      i: inp.sRet - inp.cAge },
+    { label: `Chris pension drawdown (age ${inp.cDD})`,  i: inp.cDD  - inp.cAge },
+    { label: `Sophia pension drawdown (age ${inp.sDD})`, i: inp.sDD  - inp.cAge },
+    { label: 'Chris age 65',                             i: 65 - inp.cAge       },
+    { label: '10 years (2036)',                          i: 10 },
+    { label: '20 years (2046)',                          i: 20 },
+    { label: '25 years (2051)',                          i: 25 },
+    { label: '30 years (2056)',                          i: N - 1 },
+  ];
+
+  document.getElementById('milestone-body').innerHTML = ms.map(m => {
+    if (!inRange(m.i)) return `<tr><td>${m.label}</td><td class="r" colspan="7">Outside 30-year window</td></tr>`;
+    const i = m.i;
+    return `<tr>
+      <td>${m.label}</td>
+      <td class="r">${START_YEAR + i}</td>
+      <td class="r">${gbp(A.nw[i])}</td>
+      <td class="r">${gbp(B.nw[i])}</td>
+      <td class="r ${surpClass(A.surp[i])}">${gbp(A.surp[i])}</td>
+      <td class="r ${surpClass(B.surp[i])}">${gbp(B.surp[i])}</td>
+      <td class="r ${surpClass(A.cum[i])}">${gbp(A.cum[i])}</td>
+      <td class="r ${surpClass(B.cum[i])}">${gbp(B.cum[i])}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ─────────────────────────────────────────────────────────────
+// 30-year detail tables
+// ─────────────────────────────────────────────────────────────
+function renderTables(A, B) {
+  ['a','b'].forEach(s => {
+    const d = s === 'a' ? A : B;
+    document.getElementById('body-' + s).innerHTML = YEARS.map((yr, i) => {
+      const isCRetYear = d.cAge[i] === (s === 'a' ? parseInt(document.getElementById('c_ret').value) : parseInt(document.getElementById('c_ret').value));
+      return `<tr class="${isCRetYear ? 'bold' : ''}">
+        <td>${yr}</td>
+        <td class="r">${d.cAge[i]}</td>
+        <td class="r">${d.sAge[i]}</td>
+        <td class="r">${gbp(d.nw[i])}</td>
+        <td class="r">${gbp(d.totInc[i])}</td>
+        <td class="r">${gbp(d.totExp[i])}</td>
+        <td class="r ${surpClass(d.surp[i])}">${gbp(d.surp[i])}</td>
+        <td class="r ${surpClass(d.cum[i])}">${gbp(d.cum[i])}</td>
+      </tr>`;
+    }).join('');
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// Tab switching
+// ─────────────────────────────────────────────────────────────
+function switchTab(name) {
+  const names = ['inputs', 'results', 'cashflow'];
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', names[i] === name));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// ─────────────────────────────────────────────────────────────
+// Init — calculate silently on load (results ready before first click)
+// ─────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  // Pre-populate results but stay on inputs tab
+  const originalSwitch = switchTab;
+  runCalc();
+  switchTab('inputs'); // stay on inputs after initial calc
+});
+</script>
+</body>
+</html>
